@@ -11,8 +11,6 @@ export default function Home() {
       <main className={styles.main}>
         <p>Archive Radio</p>
       </main>
-
-      <footer className={styles.footer}></footer>
     </div>
   );
 }
