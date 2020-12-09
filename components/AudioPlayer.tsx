@@ -20,6 +20,7 @@ export default function AudioPlayer(): ReactElement {
       <h3>[Progress bar]</h3>
 
       <Audio audioSourceUrl={audioSourceUrl} />
+      <button onClick={() => loadNewAudio()}>reload</button>
     </div>
   );
 }
