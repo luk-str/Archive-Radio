@@ -1,17 +1,20 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { getNewAudioTrack } from "../lib/fetchFromArchive";
 
 export default function AudioPlayer() {
   const audioElement = useRef<HTMLAudioElement>(null);
 
+  useEffect(() => {
+    loadNewAudio();
+  }, []);
+
+  async function loadNewAudio() {
+    const audioSource = await getNewAudioTrack();
+    audioElement.current.src = audioSource;
+  }
+
   const playPause: () => void = () => {
     const audio = audioElement.current;
-
-    if (audio.src === "") {
-      const testSource: string =
-        "https://ia801907.us.archive.org/2/items/lucien-muratore-monella-dufilm-le-chanteur-inconnu-pathe-x-93040/LucienMuratore,Monella,DufilmLeChanteurInconnu,PatheX93040.mp3";
-
-      audio.src = testSource;
-    }
 
     if (audio.paused) {
       audio.play();
