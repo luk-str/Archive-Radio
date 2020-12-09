@@ -14,27 +14,52 @@ const collections: string[] = [
   "unlockedrecordings",
 ];
 
-async function getNewAudioTrack() {
-  const item = await fetchRandomItem();
-  const fileList = await fetchFileList(item.identifier);
-  const audioFile = fileList.find((file: {}) => file.format === "VBR MP3");
+type Item = {
+  identifier?: string;
+};
+type File = {
+  format?: string;
+};
+type AudioFile = {
+  name?: string;
+  format?: string;
+};
+
+async function getNewAudioTrack(): Promise<string> {
+  console.log("Loading new track...");
+
+  const item: Item = await fetchRandomItem();
+
+  const fileList: object[] = await fetchFileList(item.identifier);
+  const audioFile: AudioFile = fileList.find(
+    (file: File) => file.format === "VBR MP3"
+  );
+
   const audioSourceUrl = `https://archive.org/download/${item.identifier}/${audioFile.name}`;
+
+  console.log("Track loaded!");
 
   return audioSourceUrl;
 }
 
-function fetchRandomItem(): {} {
+async function fetchRandomItem(): Promise<Item> {
   return axios
     .get(getSearchUrl())
     .then((response) => response.data.response.docs[0])
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      getNewAudioTrack();
+    });
 }
 
-function fetchFileList(itemId: string) {
+async function fetchFileList(itemId: string): Promise<object[]> {
   return axios
     .get(`https://archive.org/metadata/${itemId}`)
     .then((response) => response.data.files)
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      getNewAudioTrack();
+    });
 }
 
 function getSearchUrl(): string {
@@ -48,8 +73,5 @@ function getRandomCollection(): string {
 function getRandomPageNumber(): number {
   return Math.floor(Math.random() * searchPagesRange);
 }
-
-// async function getFileList(itemId: string) {}
-// function getSource(fileList: string[], itemId: string) {}
 
 export { getNewAudioTrack };

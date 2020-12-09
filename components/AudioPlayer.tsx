@@ -1,8 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useEffect, ReactElement, useState } from "react";
 import { getNewAudioTrack } from "../lib/fetchFromArchive";
+import Audio from "./Audio";
 
-export default function AudioPlayer() {
-  const audioElement = useRef<HTMLAudioElement>(null);
+export default function AudioPlayer(): ReactElement {
+  const [audioSourceUrl, setAudioSourceUrl] = useState<string>("");
 
   useEffect(() => {
     loadNewAudio();
@@ -10,27 +11,15 @@ export default function AudioPlayer() {
 
   async function loadNewAudio() {
     const audioSource = await getNewAudioTrack();
-    audioElement.current.src = audioSource;
+    setAudioSourceUrl(audioSource);
   }
-
-  const playPause: () => void = () => {
-    const audio = audioElement.current;
-
-    if (audio.paused) {
-      audio.play();
-      console.log("playing");
-    } else {
-      audio.pause();
-      console.log("paused");
-    }
-  };
 
   return (
     <div>
       <h2>Title</h2>
-      <audio ref={audioElement}></audio>
       <h3>[Progress bar]</h3>
-      <button onClick={playPause}>Play/Pause</button>
+
+      <Audio audioSourceUrl={audioSourceUrl} />
     </div>
   );
 }
