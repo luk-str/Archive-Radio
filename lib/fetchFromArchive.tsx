@@ -14,13 +14,42 @@ const collections: string[] = [
   "unlockedrecordings",
 ];
 
-function getRandomCollection(): string {
-  const randomIndex: number = Math.floor(Math.random() * collections.length);
-  return collections[randomIndex];
+async function getNewAudioTrack() {
+  const item = await fetchRandomItem();
+  const fileList = await fetchFileList(item.identifier);
+  const audioFile = fileList.find((file: {}) => file.format === "VBR MP3");
+  const audioSourceUrl = `https://archive.org/download/${item.identifier}/${audioFile.name}`;
+
+  return audioSourceUrl;
 }
 
-async function getItemId() {}
-async function getFileList(itemId: string) {}
-function getSource(fileList: string[], itemId: string) {}
+function fetchRandomItem(): {} {
+  return axios
+    .get(getSearchUrl())
+    .then((response) => response.data.response.docs[0])
+    .catch((err) => console.log(err));
+}
 
-export { getRandomCollection };
+function fetchFileList(itemId: string) {
+  return axios
+    .get(`https://archive.org/metadata/${itemId}`)
+    .then((response) => response.data.files)
+    .catch((err) => console.log(err));
+}
+
+function getSearchUrl(): string {
+  return `https://archive.org/advancedsearch.php?q=collection:(${getRandomCollection()})+AND+mediatype:(audio)&sort[]=__random+desc&sort[]=&sort[]=&rows=${resultsAmount}&page=${getRandomPageNumber()}&output=json`;
+}
+
+function getRandomCollection(): string {
+  return collections[Math.floor(Math.random() * collections.length)];
+}
+
+function getRandomPageNumber(): number {
+  return Math.floor(Math.random() * searchPagesRange);
+}
+
+// async function getFileList(itemId: string) {}
+// function getSource(fileList: string[], itemId: string) {}
+
+export { getNewAudioTrack };
