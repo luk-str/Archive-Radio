@@ -24,7 +24,7 @@ const Audio: FunctionComponent<Props> = ({ audioSourceUrl }) => {
   return (
     <>
       <audio src={audioSourceUrl} ref={audioElement}></audio>
-      <button onClick={playPause}>{!isPlaying ? "PLAY" : "PAUSE"}</button>
+      <button onClick={playPause}>{!isPlaying ? "►" : "∥∥"}</button>
     </>
   );
 };
