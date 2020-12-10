@@ -14,8 +14,7 @@ type AudioTrack = {
   archivePageUrl?: string;
 };
 
-const placeholderImage: string =
-  "https://via.placeholder.com/500/111111/eeeeee?text=%E2%99%AA";
+const placeholderImage: string = "/img/cover-fallback.png";
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
