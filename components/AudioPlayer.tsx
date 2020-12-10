@@ -79,11 +79,19 @@ export default function AudioPlayer(): ReactElement {
           {audioTrack.id && (
             <>
               <section className={styles.coverImage__container}>
+                <button
+                  onClick={playPause}
+                  className={`${styles.playButton} ${
+                    !isPlaying && styles.playButton_paused
+                  }`}
+                >
+                  {!isPlaying ? "►" : "∥∥"}
+                </button>
+
                 <Image
                   src={audioTrack.imageSourceUrl}
                   alt="album art"
-                  width={400}
-                  height={400}
+                  layout="fill"
                   onError={() => {
                     console.log(
                       "Cover image missing, replacing with placeholder."
@@ -96,9 +104,12 @@ export default function AudioPlayer(): ReactElement {
                 />
               </section>
 
-              <button onClick={playPause}>{!isPlaying ? "►" : "∥∥"}</button>
-
-              <button onClick={() => loadNewAudio()}>reload</button>
+              <button
+                onClick={() => loadNewAudio()}
+                className={styles.reloadButton}
+              >
+                next ➮
+              </button>
             </>
           )}
         </>
