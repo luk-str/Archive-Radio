@@ -8,6 +8,7 @@ type AudioTrack = {
   id?: string;
   title?: string;
   year?: string;
+  author?: string;
   description?: string;
   audioSourceUrl?: string;
   imageSourceUrl?: string;
@@ -32,8 +33,9 @@ export default function AudioPlayer(): ReactElement {
 
   return (
     <>
+      <h3>{audioTrack.author}</h3>
       <h2>{audioTrack.title}</h2>
-      <h3>{audioTrack.year}</h3>
+      <h4>{audioTrack.year}</h4>
 
       {audioTrack.id && (
         <>
