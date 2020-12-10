@@ -4,7 +4,7 @@ import AudioPlayer from "../components/AudioPlayer";
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Archive Radio</title>
       </Head>
@@ -13,7 +13,7 @@ export default function Home() {
         <h1>Archive Radio</h1>
       </header>
 
-      <main className={styles.main}>
+      <main>
         <AudioPlayer />
       </main>
     </div>
