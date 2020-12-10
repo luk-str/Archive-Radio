@@ -26,6 +26,10 @@ export default function Audio(props: Props): ReactElement {
       console.log("Audio source failed :(, reloading.");
       props.loadNewAudio();
     });
+    audio.addEventListener("ended", () => {
+      console.log("Track ended.");
+      props.loadNewAudio();
+    });
   }
 
   function playPause(): void {
