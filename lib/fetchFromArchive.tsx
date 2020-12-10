@@ -47,8 +47,11 @@ async function getNewAudioTrack(): Promise<AudioTrack> {
   const title = item.title;
   const year = item.year;
   const description = item.description;
-  const author =
-    typeof item.creator === "string" ? item.creator : item.creator[0] || "";
+  const author = item.creator
+    ? Array.isArray(item.creator)
+      ? item.creator[0]
+      : item.creator
+    : "";
 
   const fileList: object[] = await fetchFileList(id);
 

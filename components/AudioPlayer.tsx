@@ -1,6 +1,5 @@
-import { useEffect, ReactElement, useState } from "react";
+import { useState, useEffect, ReactElement, useRef } from "react";
 import { getNewAudioTrack } from "../lib/fetchFromArchive";
-import Audio from "./Audio";
 import styles from "./AudioPlayer.module.css";
 import Image from "next/image";
 
@@ -20,52 +19,92 @@ const placeholderImage: string =
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
+
+  const audioElement = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     loadNewAudio();
+    checkAudioSource();
   }, []);
 
   async function loadNewAudio() {
     setIsAudioReady(false);
+    setIsPlaying(false);
     setAudioTrack({});
 
     const audioTrack = await getNewAudioTrack();
     setAudioTrack(audioTrack);
   }
 
+  function playPause(): void {
+    const audio = audioElement.current;
+
+    if (audio.paused) {
+      audio.play();
+      setIsPlaying(true);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
+  }
+
+  function checkAudioSource(): void {
+    const audio = audioElement.current;
+
+    audio.addEventListener("canplay", () => {
+      console.log("Audio loaded, ready to play.");
+      setIsAudioReady(true);
+    });
+    audio.addEventListener("error", () => {
+      console.log("Audio source failed :(, reloading.");
+      loadNewAudio();
+    });
+    audio.addEventListener("ended", () => {
+      console.log("Track ended.");
+      loadNewAudio();
+    });
+  }
+
   return (
     <article>
-      <h3>{audioTrack.author}</h3>
-      <h2>{audioTrack.title}</h2>
-      <h4>{audioTrack.year}</h4>
+      <audio src={audioTrack.audioSourceUrl} ref={audioElement}></audio>
 
-      {audioTrack.id && (
+      {isAudioReady ? (
         <>
-          <section className={styles.coverImage__container}>
-            <Image
-              src={audioTrack.imageSourceUrl}
-              alt="album art"
-              width={400}
-              height={400}
-              onError={() => {
-                console.log("Cover image missing, replacing with placeholder.");
-                setAudioTrack({
-                  ...audioTrack,
-                  imageSourceUrl: placeholderImage,
-                });
-              }}
-            />
-          </section>
+          <h3>{audioTrack.author}</h3>
+          <h2>{audioTrack.title}</h2>
+          <h4>{audioTrack.year}</h4>
 
-          <Audio
-            audioSourceUrl={audioTrack.audioSourceUrl}
-            loadNewAudio={loadNewAudio}
-            audioIsReady={() => setIsAudioReady(true)}
-          />
+          {audioTrack.id && (
+            <>
+              <section className={styles.coverImage__container}>
+                <Image
+                  src={audioTrack.imageSourceUrl}
+                  alt="album art"
+                  width={400}
+                  height={400}
+                  onError={() => {
+                    console.log(
+                      "Cover image missing, replacing with placeholder."
+                    );
+                    setAudioTrack({
+                      ...audioTrack,
+                      imageSourceUrl: placeholderImage,
+                    });
+                  }}
+                />
+              </section>
 
-          <button onClick={() => loadNewAudio()}>reload</button>
+              <button onClick={playPause}>{!isPlaying ? "►" : "∥∥"}</button>
+
+              <button onClick={() => loadNewAudio()}>reload</button>
+            </>
+          )}
         </>
+      ) : (
+        <h2>wait a second...</h2>
       )}
     </article>
   );
