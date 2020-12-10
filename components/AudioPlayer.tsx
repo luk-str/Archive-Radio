@@ -2,6 +2,7 @@ import { useEffect, ReactElement, useState } from "react";
 import { getNewAudioTrack } from "../lib/fetchFromArchive";
 import Audio from "./Audio";
 import styles from "./AudioPlayer.module.css";
+import Image from "next/image";
 
 type AudioTrack = {
   id?: string;
@@ -12,6 +13,9 @@ type AudioTrack = {
   imageSourceUrl?: string;
   archivePageUrl?: string;
 };
+
+const placeholderImage: string =
+  "https://via.placeholder.com/500/111111/eeeeee?text=%E2%99%AA";
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
@@ -31,16 +35,17 @@ export default function AudioPlayer(): ReactElement {
       <h2>{audioTrack.title}</h2>
       <h3>{audioTrack.year}</h3>
 
-      {audioTrack.imageSourceUrl && (
-        <img
-          src={audioTrack.imageSourceUrl}
-          width="200"
-          height="200"
-          className={styles.coverImage}
-        />
-      )}
-      {audioTrack.id !== undefined && (
+      {audioTrack.id && (
         <>
+          <section className={styles.coverImage__container}>
+            <Image
+              src={audioTrack.imageSourceUrl}
+              alt="album art"
+              width={400}
+              height={400}
+            />
+          </section>
+
           <Audio audioSourceUrl={audioTrack.audioSourceUrl} />
 
           <button onClick={() => loadNewAudio()}>reload</button>

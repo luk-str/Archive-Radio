@@ -1,5 +1,6 @@
-.coverImage {
-  display: block;
+.coverImage__container {
   margin: 2rem auto;
-  background-color: #eee;
+  width: 20rem;
+  height: 20rem;
+  overflow: hidden;
 }
