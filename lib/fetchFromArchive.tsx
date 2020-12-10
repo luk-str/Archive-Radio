@@ -18,6 +18,7 @@ type FetchedItem = {
   identifier: string;
   title?: string;
   year?: string;
+  creator?: string | string[];
   description?: string;
 };
 
@@ -25,6 +26,7 @@ type AudioTrack = {
   id: string;
   title?: string;
   year?: string;
+  author?: string;
   description: string;
   audioSourceUrl: string;
   imageSourceUrl: string;
@@ -45,6 +47,8 @@ async function getNewAudioTrack(): Promise<AudioTrack> {
   const title = item.title;
   const year = item.year;
   const description = item.description;
+  const author =
+    typeof item.creator === "string" ? item.creator : item.creator[0];
 
   const fileList: object[] = await fetchFileList(id);
 
@@ -64,6 +68,7 @@ async function getNewAudioTrack(): Promise<AudioTrack> {
     id,
     title,
     year,
+    author,
     description,
     audioSourceUrl,
     imageSourceUrl,
@@ -71,8 +76,8 @@ async function getNewAudioTrack(): Promise<AudioTrack> {
   };
 
   console.log("Track loaded!");
-  console.log(audioTrack);
-  console.log(fileList);
+  console.log(audioTrack.author);
+  console.log(item);
 
   return audioTrack;
 }
