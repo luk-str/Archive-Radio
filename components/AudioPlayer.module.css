@@ -1,4 +1,8 @@
 .coverImage__container {
-  margin: 0 auto;
+  margin: 0 auto 3rem;
   max-width: 30rem;
+}
+
+.coverImage__container img {
+  border-radius: 7%;
 }
