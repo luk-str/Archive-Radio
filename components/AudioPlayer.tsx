@@ -31,7 +31,7 @@ export default function AudioPlayer(): ReactElement {
   }
 
   return (
-    <div>
+    <>
       <h2>{audioTrack.title}</h2>
       <h3>{audioTrack.year}</h3>
 
@@ -51,6 +51,6 @@ export default function AudioPlayer(): ReactElement {
           <button onClick={() => loadNewAudio()}>reload</button>
         </>
       )}
-    </div>
+    </>
   );
 }
