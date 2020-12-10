@@ -1,6 +1,4 @@
 .coverImage__container {
-  margin: 2rem auto;
-  width: 20rem;
-  height: 20rem;
-  overflow: hidden;
+  margin: 0 auto;
+  max-width: 30rem;
 }
