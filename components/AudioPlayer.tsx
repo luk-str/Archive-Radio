@@ -114,7 +114,9 @@ export default function AudioPlayer(): ReactElement {
           )}
         </>
       ) : (
-        <h2>wait a second...</h2>
+        <section className={styles.loadingTextContainer}>
+          <h2 className={styles.loadingText}>Looking for a new song...</h2>
+        </section>
       )}
     </article>
   );

@@ -50,3 +50,15 @@
 .reloadButton:hover {
   color: #33c;
 }
+
+.loadingText {
+  font-size: 3rem;
+}
+
+.loadingTextContainer {
+  position: fixed;
+  max-width: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
