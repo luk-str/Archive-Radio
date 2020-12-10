@@ -1,15 +1,44 @@
-import { FunctionComponent, useRef, useState } from "react";
+import {
+  FunctionComponent,
+  useRef,
+  useState,
+  useEffect,
+  ReactElement,
+} from "react";
 
 type Props = {
   audioSourceUrl: string;
+  loadNewAudio: () => void;
+  audioIsReady: () => void;
 };
 
-const Audio: FunctionComponent<Props> = ({ audioSourceUrl }) => {
+export default function Audio({
+  audioSourceUrl,
+  loadNewAudio,
+  audioIsReady,
+}): ReactElement<Props> {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   const audioElement = useRef<HTMLAudioElement>(null);
 
-  const playPause: () => void = () => {
+  useEffect(() => {
+    checkAudioSource();
+  }, []);
+
+  function checkAudioSource(): void {
+    const audio = audioElement.current;
+
+    audio.addEventListener("canplay", () => {
+      console.log("Audio loaded, ready to play.");
+      audioIsReady();
+    });
+    audio.addEventListener("error", () => {
+      console.log("Audio source failed :(, reloading.");
+      loadNewAudio();
+    });
+  }
+
+  function playPause(): void {
     const audio = audioElement.current;
 
     if (audio.paused) {
@@ -19,7 +48,7 @@ const Audio: FunctionComponent<Props> = ({ audioSourceUrl }) => {
       audio.pause();
       setIsPlaying(false);
     }
-  };
+  }
 
   return (
     <>
@@ -27,6 +56,4 @@ const Audio: FunctionComponent<Props> = ({ audioSourceUrl }) => {
       <button onClick={playPause}>{!isPlaying ? "►" : "∥∥"}</button>
     </>
   );
-};
-
-export default Audio;
+}

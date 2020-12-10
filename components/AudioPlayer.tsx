@@ -20,19 +20,22 @@ const placeholderImage: string =
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
+  const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
 
   useEffect(() => {
     loadNewAudio();
   }, []);
 
   async function loadNewAudio() {
+    setIsAudioReady(false);
     setAudioTrack({});
+
     const audioTrack = await getNewAudioTrack();
     setAudioTrack(audioTrack);
   }
 
   return (
-    <>
+    <article>
       <h3>{audioTrack.author}</h3>
       <h2>{audioTrack.title}</h2>
       <h4>{audioTrack.year}</h4>
@@ -45,14 +48,25 @@ export default function AudioPlayer(): ReactElement {
               alt="album art"
               width={400}
               height={400}
+              onError={() => {
+                console.log("Cover image missing, replacing with placeholder.");
+                setAudioTrack({
+                  ...audioTrack,
+                  imageSourceUrl: placeholderImage,
+                });
+              }}
             />
           </section>
 
-          <Audio audioSourceUrl={audioTrack.audioSourceUrl} />
+          <Audio
+            audioSourceUrl={audioTrack.audioSourceUrl}
+            loadNewAudio={loadNewAudio}
+            audioIsReady={() => setIsAudioReady(true)}
+          />
 
           <button onClick={() => loadNewAudio()}>reload</button>
         </>
       )}
-    </>
+    </article>
   );
 }

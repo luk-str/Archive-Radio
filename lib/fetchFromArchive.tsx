@@ -39,7 +39,7 @@ type File = {
 };
 
 async function getNewAudioTrack(): Promise<AudioTrack> {
-  console.log("Loading new track...");
+  console.log("Looking for new track...");
 
   const item: FetchedItem = await fetchRandomItem();
 
@@ -48,7 +48,7 @@ async function getNewAudioTrack(): Promise<AudioTrack> {
   const year = item.year;
   const description = item.description;
   const author =
-    typeof item.creator === "string" ? item.creator : item.creator[0];
+    typeof item.creator === "string" ? item.creator : item.creator[0] || "";
 
   const fileList: object[] = await fetchFileList(id);
 
@@ -75,9 +75,7 @@ async function getNewAudioTrack(): Promise<AudioTrack> {
     archivePageUrl,
   };
 
-  console.log("Track loaded!");
-  console.log(audioTrack.author);
-  console.log(item);
+  console.log("New track found!");
 
   return audioTrack;
 }
