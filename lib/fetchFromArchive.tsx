@@ -14,35 +14,70 @@ const collections: string[] = [
   "unlockedrecordings",
 ];
 
-type Item = {
-  identifier?: string;
+type FetchedItem = {
+  identifier: string;
+  title?: string;
+  year?: string;
+  description?: string;
 };
+
+type AudioTrack = {
+  id: string;
+  title?: string;
+  year?: string;
+  description: string;
+  audioSourceUrl: string;
+  imageSourceUrl: string;
+  archivePageUrl: string;
+};
+
 type File = {
-  format?: string;
-};
-type AudioFile = {
   name?: string;
   format?: string;
 };
 
-async function getNewAudioTrack(): Promise<string> {
+async function getNewAudioTrack(): Promise<AudioTrack> {
   console.log("Loading new track...");
 
-  const item: Item = await fetchRandomItem();
+  const item: FetchedItem = await fetchRandomItem();
 
-  const fileList: object[] = await fetchFileList(item.identifier);
-  const audioFile: AudioFile = fileList.find(
+  const id = item.identifier;
+  const title = item.title;
+  const year = item.year;
+  const description = item.description;
+
+  const fileList: object[] = await fetchFileList(id);
+
+  const audioFile: File = fileList.find(
     (file: File) => file.format === "VBR MP3"
   );
+  const audioSourceUrl = `https://archive.org/download/${item.identifier}/${audioFile?.name}`;
 
-  const audioSourceUrl = `https://archive.org/download/${item.identifier}/${audioFile.name}`;
+  const imageFile: File = fileList.find(
+    (file: File) => file.format === "Item Image"
+  );
+  const imageSourceUrl = `https://archive.org/download/${item.identifier}/${imageFile?.name}`;
+
+  const archivePageUrl: string = `https://archive.org/details/${id}`;
+
+  const audioTrack: AudioTrack = {
+    id,
+    title,
+    year,
+    description,
+    audioSourceUrl,
+    imageSourceUrl,
+    archivePageUrl,
+  };
 
   console.log("Track loaded!");
+  console.log(audioTrack);
+  console.log(fileList);
 
-  return audioSourceUrl;
+  return audioTrack;
 }
 
-async function fetchRandomItem(): Promise<Item> {
+async function fetchRandomItem(): Promise<FetchedItem> {
   return axios
     .get(getSearchUrl())
     .then((response) => response.data.response.docs[0])
@@ -52,7 +87,7 @@ async function fetchRandomItem(): Promise<Item> {
     });
 }
 
-async function fetchFileList(itemId: string): Promise<object[]> {
+async function fetchFileList(itemId: string): Promise<File[]> {
   return axios
     .get(`https://archive.org/metadata/${itemId}`)
     .then((response) => response.data.files)
