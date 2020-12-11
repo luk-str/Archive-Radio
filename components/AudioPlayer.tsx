@@ -32,22 +32,21 @@ export default function AudioPlayer(): ReactElement {
     loadNewAudio();
     checkAudioSource();
 
-    audio.addEventListener("timeupdate", () => {
-      setCurrentPosition(audio.currentTime);
-    });
+    audio.addEventListener("timeupdate", () =>
+      setCurrentPosition(audio.currentTime)
+    );
 
-    audio.addEventListener("ended", () => {
-      loadNewAudio();
-    });
-
-    audio.addEventListener("error", () => {
-      loadNewAudio();
-    });
+    audio.addEventListener("play", () => setIsPlaying(true));
+    audio.addEventListener("pause", () => setIsPlaying(false));
+    audio.addEventListener("ended", () => loadNewAudio());
+    audio.addEventListener("error", () => loadNewAudio());
   }, []);
 
   async function loadNewAudio() {
-    setIsAudioReady(false);
+    audioElement.current.pause();
     setIsPlaying(false);
+    setIsAudioReady(false);
+
     setAudioTrack({});
 
     const audioTrack = await getNewAudioTrack();
@@ -59,10 +58,8 @@ export default function AudioPlayer(): ReactElement {
 
     if (audio.paused) {
       audio.play();
-      setIsPlaying(true);
     } else {
       audio.pause();
-      setIsPlaying(false);
     }
   }
 
@@ -77,7 +74,11 @@ export default function AudioPlayer(): ReactElement {
 
   return (
     <article>
-      <audio src={audioTrack.audioSourceUrl} ref={audioElement}></audio>
+      <audio
+        src={audioTrack.audioSourceUrl}
+        ref={audioElement}
+        autoPlay
+      ></audio>
 
       {isAudioReady ? (
         <>
