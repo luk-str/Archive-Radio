@@ -1,6 +1,6 @@
 .coverImage__container {
   position: relative;
-  margin: 0 auto 3rem;
+  margin: 2rem auto 3rem;
   width: clamp(10rem, 70vw, 30rem);
   height: clamp(10rem, 70vw, 30rem);
   display: flex;
