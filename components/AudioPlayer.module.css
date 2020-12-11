@@ -6,6 +6,7 @@
   display: flex;
   border-radius: 7%;
   overflow: hidden;
+  background-color: #222;
 }
 
 .coverImage__container img {
