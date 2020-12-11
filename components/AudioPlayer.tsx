@@ -1,5 +1,6 @@
 import { useState, useEffect, ReactElement, useRef } from "react";
 import { getNewAudioTrack } from "../lib/fetchFromArchive";
+import { convertSecondsToMinSec } from "../lib/convertMetadata";
 import styles from "./AudioPlayer.module.css";
 import Image from "next/image";
 
@@ -20,12 +21,28 @@ export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
+  const [duration, setDuration] = useState<number>();
+  const [currentPosition, setCurrentPosition] = useState<number>(0);
 
   const audioElement = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
+    const audio = audioElement.current;
+
     loadNewAudio();
     checkAudioSource();
+
+    audio.addEventListener("timeupdate", () => {
+      setCurrentPosition(audio.currentTime);
+    });
+
+    audio.addEventListener("ended", () => {
+      loadNewAudio();
+    });
+
+    audio.addEventListener("error", () => {
+      loadNewAudio();
+    });
   }, []);
 
   async function loadNewAudio() {
@@ -53,16 +70,8 @@ export default function AudioPlayer(): ReactElement {
     const audio = audioElement.current;
 
     audio.addEventListener("loadedmetadata", () => {
-      console.log("Audio loaded, ready to play.");
       setIsAudioReady(true);
-    });
-    audio.addEventListener("error", () => {
-      console.log("Audio source failed :(, reloading.");
-      loadNewAudio();
-    });
-    audio.addEventListener("ended", () => {
-      console.log("Track ended.");
-      loadNewAudio();
+      setDuration(audio.duration);
     });
   }
 
@@ -93,9 +102,6 @@ export default function AudioPlayer(): ReactElement {
                   alt="album art"
                   layout="fill"
                   onError={() => {
-                    console.log(
-                      "Cover image missing, replacing with placeholder."
-                    );
                     setAudioTrack({
                       ...audioTrack,
                       imageSourceUrl: placeholderImage,
@@ -103,6 +109,11 @@ export default function AudioPlayer(): ReactElement {
                   }}
                 />
               </section>
+              <h5>
+                {`${convertSecondsToMinSec(
+                  currentPosition
+                )} / ${convertSecondsToMinSec(duration)}`}
+              </h5>
 
               <button
                 onClick={() => loadNewAudio()}
