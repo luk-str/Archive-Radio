@@ -52,7 +52,7 @@ export default function AudioPlayer(): ReactElement {
   function checkAudioSource(): void {
     const audio = audioElement.current;
 
-    audio.addEventListener("canplay", () => {
+    audio.addEventListener("loadedmetadata", () => {
       console.log("Audio loaded, ready to play.");
       setIsAudioReady(true);
     });
