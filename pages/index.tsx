@@ -6,6 +6,10 @@ export default function Home() {
     <div>
       <Head>
         <title>Archive Radio</title>
+        <meta
+          name="description"
+          content="A simple audio player for the open music collections of Internet Archive"
+        />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
