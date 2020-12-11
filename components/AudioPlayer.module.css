@@ -51,10 +51,6 @@
   color: #33c;
 }
 
-.loadingText {
-  font-size: 3rem;
-}
-
 .loadingTextContainer {
   position: fixed;
   max-width: 50%;
@@ -64,6 +60,7 @@
 }
 
 .loadingText {
+  font-size: clamp(2rem, 7vw, 6rem);
   background: linear-gradient(
     90deg,
     rgb(0, 0, 255),
@@ -73,7 +70,6 @@
   background-clip: text;
   color: transparent;
   animation: loadingAnimation 20s linear infinite;
-
   background-size: 90%;
 }
 
