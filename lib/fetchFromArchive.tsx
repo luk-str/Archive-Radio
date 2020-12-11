@@ -39,8 +39,6 @@ type File = {
 };
 
 async function getNewAudioTrack(): Promise<AudioTrack> {
-  console.log("Looking for new track...");
-
   const item: FetchedItem = await fetchRandomItem();
 
   const id = item.identifier;
@@ -77,8 +75,6 @@ async function getNewAudioTrack(): Promise<AudioTrack> {
     imageSourceUrl,
     archivePageUrl,
   };
-
-  console.log("New track found!");
 
   return audioTrack;
 }
