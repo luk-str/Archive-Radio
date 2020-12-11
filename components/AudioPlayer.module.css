@@ -62,3 +62,26 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.loadingText {
+  background: linear-gradient(
+    90deg,
+    rgb(0, 0, 255),
+    rgb(255, 150, 200),
+    rgb(0, 0, 255)
+  );
+  background-clip: text;
+  color: transparent;
+  animation: loadingAnimation 20s linear infinite;
+
+  background-size: 90%;
+}
+
+@keyframes loadingAnimation {
+  from {
+    background-position: -5000%;
+  }
+  to {
+    background-position: 5000%;
+  }
+}
