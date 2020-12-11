@@ -24,7 +24,7 @@ export default function Home() {
           sizes="16x16"
           href="favicon/favicon-16x16.png"
         />
-        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="manifest" href="favicon/site.webmanifest" />
       </Head>
 
       <header>
