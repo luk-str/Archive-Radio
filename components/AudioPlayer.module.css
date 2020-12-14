@@ -46,6 +46,7 @@
   padding: 0;
   font-size: 1.5rem;
   text-decoration: underline;
+  margin-top: 1.5rem;
 }
 
 .reloadButton:hover {
@@ -81,4 +82,9 @@
   to {
     background-position: 5000%;
   }
+}
+
+.checkboxLabel {
+  padding-left: 0.4em;
+  cursor: pointer;
 }

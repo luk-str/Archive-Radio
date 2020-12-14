@@ -23,6 +23,7 @@ export default function AudioPlayer(): ReactElement {
   const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>();
   const [currentPosition, setCurrentPosition] = useState<number>(0);
+  const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
 
   const audioElement = useRef<HTMLAudioElement>(null);
 
@@ -40,6 +41,8 @@ export default function AudioPlayer(): ReactElement {
     audio.addEventListener("pause", () => setIsPlaying(false));
     audio.addEventListener("ended", () => loadNewAudio());
     audio.addEventListener("error", () => loadNewAudio());
+
+    setIsAutoplayOn(true);
   }, []);
 
   async function loadNewAudio() {
@@ -72,12 +75,16 @@ export default function AudioPlayer(): ReactElement {
     });
   }
 
+  function toggleAutoplay(): void {
+    setIsAutoplayOn(!isAutoplayOn);
+  }
+
   return (
     <article>
       <audio
         src={audioTrack.audioSourceUrl}
         ref={audioElement}
-        autoPlay
+        autoPlay={isAutoplayOn}
       ></audio>
 
       {isAudioReady ? (
@@ -115,6 +122,18 @@ export default function AudioPlayer(): ReactElement {
                   currentPosition
                 )} / ${convertSecondsToMinSec(duration)}`}
               </h5>
+
+              <input
+                type="checkbox"
+                id="autoplay"
+                name="autoplay"
+                value="autoplay"
+                checked={isAutoplayOn}
+                onChange={toggleAutoplay}
+              />
+              <label htmlFor="autoplay" className={styles.checkboxLabel}>
+                autoplay
+              </label>
 
               <button
                 onClick={() => loadNewAudio()}
