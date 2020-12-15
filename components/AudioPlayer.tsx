@@ -41,8 +41,6 @@ export default function AudioPlayer(): ReactElement {
     audio.addEventListener("pause", () => setIsPlaying(false));
     audio.addEventListener("ended", () => loadNewAudio());
     audio.addEventListener("error", () => loadNewAudio());
-
-    setIsAutoplayOn(true);
   }, []);
 
   async function loadNewAudio() {
