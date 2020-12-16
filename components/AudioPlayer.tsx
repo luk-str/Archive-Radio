@@ -30,7 +30,7 @@ export default function AudioPlayer(): ReactElement {
   useEffect(() => {
     const audio = audioElement.current;
 
-    loadNewAudio();
+    loadRandomAudioTrack();
     checkAudioSource();
 
     audio.addEventListener("timeupdate", () =>
@@ -39,19 +39,23 @@ export default function AudioPlayer(): ReactElement {
 
     audio.addEventListener("play", () => setIsPlaying(true));
     audio.addEventListener("pause", () => setIsPlaying(false));
-    audio.addEventListener("ended", () => loadNewAudio());
-    audio.addEventListener("error", () => loadNewAudio());
+    audio.addEventListener("ended", () => loadRandomAudioTrack());
+    audio.addEventListener("error", () => loadRandomAudioTrack());
   }, []);
 
-  async function loadNewAudio() {
+  async function loadRandomAudioTrack(): Promise<void> {
+    resetPlayer();
+
+    const audioTrack = await getNewAudioTrack();
+
+    setAudioTrack(audioTrack);
+  }
+
+  function resetPlayer(): void {
     audioElement.current.pause();
     setIsPlaying(false);
     setIsAudioReady(false);
-
     setAudioTrack({});
-
-    const audioTrack = await getNewAudioTrack();
-    setAudioTrack(audioTrack);
   }
 
   function playPause(): void {
@@ -91,56 +95,52 @@ export default function AudioPlayer(): ReactElement {
           <h2>{audioTrack.title}</h2>
           <h4>{audioTrack.year}</h4>
 
-          {audioTrack.id && (
-            <>
-              <section className={styles.coverImage__container}>
-                <button
-                  onClick={playPause}
-                  className={`${styles.playButton} ${
-                    !isPlaying && styles.playButton_paused
-                  }`}
-                >
-                  {!isPlaying ? "►" : "∥∥"}
-                </button>
+          <section className={styles.coverImage__container}>
+            <button
+              onClick={playPause}
+              className={`${styles.playButton} ${
+                !isPlaying && styles.playButton_paused
+              }`}
+            >
+              {!isPlaying ? "►" : "∥∥"}
+            </button>
 
-                <Image
-                  src={audioTrack.imageSourceUrl}
-                  alt="album art"
-                  layout="fill"
-                  onError={() => {
-                    setAudioTrack({
-                      ...audioTrack,
-                      imageSourceUrl: placeholderImage,
-                    });
-                  }}
-                />
-              </section>
-              <h5>
-                {`${convertSecondsToMinSec(
-                  currentPosition
-                )} / ${convertSecondsToMinSec(duration)}`}
-              </h5>
+            <Image
+              src={audioTrack.imageSourceUrl || placeholderImage}
+              alt="album art"
+              layout="fill"
+              onError={() => {
+                setAudioTrack({
+                  ...audioTrack,
+                  imageSourceUrl: placeholderImage,
+                });
+              }}
+            />
+          </section>
+          <h5>
+            {`${convertSecondsToMinSec(
+              currentPosition
+            )} / ${convertSecondsToMinSec(duration)}`}
+          </h5>
 
-              <input
-                type="checkbox"
-                id="autoplay"
-                name="autoplay"
-                value="autoplay"
-                checked={isAutoplayOn}
-                onChange={toggleAutoplay}
-              />
-              <label htmlFor="autoplay" className={styles.checkboxLabel}>
-                autoplay
-              </label>
+          <input
+            type="checkbox"
+            id="autoplay"
+            name="autoplay"
+            value="autoplay"
+            checked={isAutoplayOn}
+            onChange={toggleAutoplay}
+          />
+          <label htmlFor="autoplay" className={styles.checkboxLabel}>
+            autoplay
+          </label>
 
-              <button
-                onClick={() => loadNewAudio()}
-                className={styles.reloadButton}
-              >
-                next ➮
-              </button>
-            </>
-          )}
+          <button
+            onClick={() => loadRandomAudioTrack()}
+            className={styles.reloadButton}
+          >
+            next ➮
+          </button>
         </>
       ) : (
         <section className={styles.loadingTextContainer}>
