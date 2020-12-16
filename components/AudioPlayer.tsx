@@ -31,7 +31,11 @@ export default function AudioPlayer(): ReactElement {
     const audio = audioElement.current;
 
     loadRandomAudioTrack();
-    checkAudioSource();
+
+    audio.addEventListener("durationchange", () => {
+      setDuration(audio.duration);
+      setIsAudioReady(true);
+    });
 
     audio.addEventListener("timeupdate", () =>
       setCurrentPosition(audio.currentTime)
@@ -66,19 +70,6 @@ export default function AudioPlayer(): ReactElement {
     } else {
       audio.pause();
     }
-  }
-
-  function checkAudioSource(): void {
-    const audio = audioElement.current;
-
-    audio.addEventListener("loadedmetadata", () => {
-      setIsAudioReady(true);
-      setDuration(audio.duration);
-    });
-  }
-
-  function toggleAutoplay(): void {
-    setIsAutoplayOn(!isAutoplayOn);
   }
 
   return (
@@ -129,7 +120,7 @@ export default function AudioPlayer(): ReactElement {
             name="autoplay"
             value="autoplay"
             checked={isAutoplayOn}
-            onChange={toggleAutoplay}
+            onChange={() => setIsAutoplayOn(!isAutoplayOn)}
           />
           <label htmlFor="autoplay" className={styles.checkboxLabel}>
             autoplay
