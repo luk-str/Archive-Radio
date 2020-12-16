@@ -100,7 +100,7 @@ async function fetchFileList(itemId: string): Promise<File[]> {
 }
 
 function getSearchUrl(): string {
-  return `https://archive.org/advancedsearch.php?q=collection:(${getRandomCollection()})+AND+mediatype:(audio)&sort[]=__random+desc&sort[]=&sort[]=&rows=${resultsAmount}&page=${getRandomPageNumber()}&output=json`;
+  return `https://archive.org/advancedsearch.php?q=collection:(${getRandomCollection()})+AND+mediatype:(audio)&fl[]=identifier&fl[]=creator&fl[]=title&fl[]=year&fl[]=creator&sort[]=__random+desc&rows=1&page=${getRandomPageNumber()}&output=json`;
 }
 
 function getRandomCollection(): string {
