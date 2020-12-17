@@ -169,7 +169,6 @@ export default function AudioPlayer(): ReactElement {
             type="checkbox"
             id="autoplay"
             name="autoplay"
-            value="autoplay"
             checked={isAutoplayOn}
             onChange={() => setIsAutoplayOn(!isAutoplayOn)}
           />
@@ -177,22 +176,24 @@ export default function AudioPlayer(): ReactElement {
             autoplay
           </label>
 
-          <button
-            onClick={() => loadNextTrack()}
-            className={styles.reloadButton}
-          >
-            next ➮
-          </button>
+          <nav>
+            {/* Only display "previous" button when there's more than 1 element in memory & current Track isn't the first in memory */}
+            {trackMemory.length > 1 && trackMemory.indexOf(audioTrack) > 0 && (
+              <button
+                onClick={() => loadPreviousTrack()}
+                className={styles.changeTrackButton}
+              >
+                ☜
+              </button>
+            )}
 
-          {/* Only display "previous" button when there's more than 1 element in memory & current Track isn't the first in memory */}
-          {trackMemory.length > 1 && trackMemory.indexOf(audioTrack) > 0 && (
             <button
-              onClick={() => loadPreviousTrack()}
-              className={styles.reloadButton}
+              onClick={() => loadNextTrack()}
+              className={styles.changeTrackButton}
             >
-              prev
+              ☞
             </button>
-          )}
+          </nav>
         </>
       ) : (
         <section className={styles.loadingTextContainer}>
