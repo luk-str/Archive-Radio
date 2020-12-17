@@ -1,12 +1,12 @@
+import styles from "./AudioPlayer.module.css";
 import { useState, useEffect, ReactElement, useRef } from "react";
+import Image from "next/image";
 import {
   getAudioTrack,
   fetchRandomItemId,
   fetchMetadata,
 } from "../lib/fetchFromArchive";
 import { convertSecondsToMinSec } from "../lib/convertMetadata";
-import styles from "./AudioPlayer.module.css";
-import Image from "next/image";
 
 type AudioTrack = {
   id?: string;
@@ -28,28 +28,74 @@ export default function AudioPlayer(): ReactElement {
   const [duration, setDuration] = useState<number>();
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
+  const [trackMemory, setTrackMemory] = useState<string[]>([]); // TODO: Change memory from storing id's to storing whole metadata objects to skip fetching metadata every time
 
   const audioElement = useRef<HTMLAudioElement>(null);
+
+  // Initialize player on first load
 
   useEffect(() => {
     const audio = audioElement.current;
 
     loadRandomAudioTrack();
 
-    audio.addEventListener("durationchange", () => {
+    audio.ondurationchange = () => {
       setDuration(audio.duration);
       setIsAudioReady(true);
-    });
+    };
 
-    audio.addEventListener("timeupdate", () =>
-      setCurrentPosition(audio.currentTime)
-    );
-
-    audio.addEventListener("play", () => setIsPlaying(true));
-    audio.addEventListener("pause", () => setIsPlaying(false));
-    audio.addEventListener("ended", () => loadRandomAudioTrack());
-    audio.addEventListener("error", () => loadRandomAudioTrack());
+    audio.ontimeupdate = () => setCurrentPosition(audio.currentTime);
+    audio.onplay = () => setIsPlaying(true);
+    audio.onpause = () => setIsPlaying(false);
+    audio.onended = () => loadRandomAudioTrack();
+    audio.onerror = () => loadRandomAudioTrack();
   }, []);
+
+  // Update track memory when audio is valid and ready to play
+  useEffect(() => {
+    // Only run when isAudioReady updates to true
+    if (isAudioReady) {
+      let currentMemory = trackMemory.filter(Boolean);
+
+      // Only add new track to memory if it isn't already in the memory
+      if (!trackMemory.includes(audioTrack.id)) {
+        setTrackMemory([...currentMemory, audioTrack.id]);
+      }
+    }
+  }, [isAudioReady]);
+
+  // TRACK LOADING
+
+  async function loadNextTrack(): Promise<void> {
+    // Check the index of current audio before resetting
+    const currentTrackMemoryIndex: number = trackMemory.indexOf(audioTrack.id);
+
+    // Load new random track if current track is the last in the memory
+    if (currentTrackMemoryIndex === trackMemory.length - 1) {
+      loadRandomAudioTrack();
+    } else {
+      // Otherwise load the next track from memory
+      resetPlayer();
+      const nextTrackId = trackMemory[currentTrackMemoryIndex + 1];
+
+      const itemMetadata = await fetchMetadata(nextTrackId);
+      const audioTrackData = getAudioTrack(itemMetadata);
+
+      setAudioTrack(audioTrackData);
+    }
+  }
+
+  async function loadPreviousTrack(): Promise<void> {
+    const currentTrackMemoryIndex: number = trackMemory.indexOf(audioTrack.id);
+    const previousTrackId: string = trackMemory[currentTrackMemoryIndex - 1];
+
+    resetPlayer();
+
+    const itemMetadata = await fetchMetadata(previousTrackId);
+    const audioTrackData = getAudioTrack(itemMetadata);
+
+    setAudioTrack(audioTrackData);
+  }
 
   async function loadRandomAudioTrack(): Promise<void> {
     resetPlayer();
@@ -61,6 +107,8 @@ export default function AudioPlayer(): ReactElement {
 
     setAudioTrack(audioTrack);
   }
+
+  // Controlling the Audio Player
 
   function resetPlayer(): void {
     audioElement.current.pause();
@@ -78,6 +126,8 @@ export default function AudioPlayer(): ReactElement {
       audio.pause();
     }
   }
+
+  // RENDER
 
   return (
     <article>
@@ -134,11 +184,29 @@ export default function AudioPlayer(): ReactElement {
           </label>
 
           <button
-            onClick={() => loadRandomAudioTrack()}
+            onClick={() => loadNextTrack()}
             className={styles.reloadButton}
           >
             next ➮
           </button>
+
+          {/* Only display "previous" button when there's more than 1 element in memory & current Track isn't the first in memory */}
+          {trackMemory.length > 1 && trackMemory.indexOf(audioTrack.id) > 0 && (
+            <button
+              onClick={() => loadPreviousTrack()}
+              className={styles.reloadButton}
+            >
+              prev
+            </button>
+          )}
+
+          {/* Temporary history display */}
+          <h4>History:</h4>
+          <ul>
+            {trackMemory.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </>
       ) : (
         <section className={styles.loadingTextContainer}>
