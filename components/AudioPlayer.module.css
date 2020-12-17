@@ -41,16 +41,20 @@
   transition-duration: 0.1s;
 }
 
-.reloadButton {
+.changeTrackButton {
+  display: inline-block;
   border: none;
-  padding: 0;
-  font-size: 1.5rem;
-  text-decoration: underline;
-  margin-top: 1.5rem;
+  padding: 0rem;
+  margin: 2rem;
+  font-size: 3rem;
+  color: #00f;
+  transition: 300ms;
 }
 
-.reloadButton:hover {
-  color: #33c;
+.changeTrackButton:hover,
+.changeTrackButton:focus {
+  transform: scale(1.1);
+  transition: 100ms;
 }
 
 .loadingTextContainer {
