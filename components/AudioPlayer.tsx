@@ -193,14 +193,6 @@ export default function AudioPlayer(): ReactElement {
               prev
             </button>
           )}
-
-          {/* Temporary history display */}
-          <h4>History:</h4>
-          <ul>
-            {trackMemory.map((item) => (
-              <li key={item.id}>{item.title}</li>
-            ))}
-          </ul>
         </>
       ) : (
         <section className={styles.loadingTextContainer}>
