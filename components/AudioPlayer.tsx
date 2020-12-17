@@ -1,5 +1,9 @@
 import { useState, useEffect, ReactElement, useRef } from "react";
-import { getAudioTrack, fetchRandomItemId } from "../lib/fetchFromArchive";
+import {
+  getAudioTrack,
+  fetchRandomItemId,
+  fetchMetadata,
+} from "../lib/fetchFromArchive";
 import { convertSecondsToMinSec } from "../lib/convertMetadata";
 import styles from "./AudioPlayer.module.css";
 import Image from "next/image";
@@ -51,7 +55,9 @@ export default function AudioPlayer(): ReactElement {
     resetPlayer();
 
     const id = await fetchRandomItemId();
-    const audioTrack = await getAudioTrack(id);
+    const itemMetadata = await fetchMetadata(id);
+
+    const audioTrack = getAudioTrack(itemMetadata);
 
     setAudioTrack(audioTrack);
   }

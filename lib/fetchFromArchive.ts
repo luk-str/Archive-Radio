@@ -15,6 +15,7 @@ const collections: string[] = [
 
 type Metadata = {
   metadata?: {
+    identifier?: string;
     title?: string;
     year?: string;
     description?: string;
@@ -24,7 +25,7 @@ type Metadata = {
 };
 
 type AudioTrack = {
-  id: string;
+  id?: string;
   title?: string;
   year?: string;
   author?: string;
@@ -39,34 +40,34 @@ type File = {
   format?: string;
 };
 
-export async function getAudioTrack(id: string): Promise<AudioTrack> {
-  const metadata = await fetchMetadata(id);
+export function getAudioTrack(itemMetadata: Metadata): AudioTrack {
+  const itemInfo = itemMetadata.metadata;
+  const fileList = itemMetadata.files;
 
-  const itemMetadata = metadata.metadata;
-  const fileList = metadata.files;
+  const id = itemInfo.identifier;
+  const title = itemInfo.title;
+  const year = itemInfo.year;
+  const description = itemInfo.description;
 
-  const title = itemMetadata.title;
-  const year = itemMetadata.year;
-  const description = itemMetadata.description;
-  const author = itemMetadata.creator
-    ? Array.isArray(itemMetadata.creator)
-      ? itemMetadata.creator[0]
-      : itemMetadata.creator
+  const author = itemInfo.creator
+    ? Array.isArray(itemInfo.creator)
+      ? itemInfo.creator[0]
+      : itemInfo.creator
     : "";
 
   const audioFile: File = fileList.find(
     (file: File) => file.format === "VBR MP3"
   );
-  const audioSourceUrl = `https://archive.org/download/${id}/${audioFile?.name}`;
 
   const imageFile: File = fileList.find(
     (file: File) => file.format === "Item Image"
   );
-  const imageSourceUrl = `https://archive.org/download/${id}/${imageFile?.name}`;
 
+  const audioSourceUrl = `https://archive.org/download/${id}/${audioFile?.name}`;
+  const imageSourceUrl = `https://archive.org/download/${id}/${imageFile?.name}`;
   const archivePageUrl: string = `https://archive.org/details/${id}`;
 
-  const audioTrack: AudioTrack = {
+  return {
     id,
     title,
     year,
@@ -76,8 +77,6 @@ export async function getAudioTrack(id: string): Promise<AudioTrack> {
     imageSourceUrl,
     archivePageUrl,
   };
-
-  return audioTrack;
 }
 
 export async function fetchRandomItemId(): Promise<string> {
@@ -90,7 +89,7 @@ export async function fetchRandomItemId(): Promise<string> {
     });
 }
 
-async function fetchMetadata(id: string): Promise<Metadata> {
+export async function fetchMetadata(id: string): Promise<Metadata> {
   return axios
     .get(`https://archive.org/metadata/${id}`)
     .then((response) => response.data)
