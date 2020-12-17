@@ -1,5 +1,5 @@
 import { useState, useEffect, ReactElement, useRef } from "react";
-import { getNewAudioTrack } from "../lib/fetchFromArchive";
+import { getAudioTrack, fetchRandomItemId } from "../lib/fetchFromArchive";
 import { convertSecondsToMinSec } from "../lib/convertMetadata";
 import styles from "./AudioPlayer.module.css";
 import Image from "next/image";
@@ -50,7 +50,8 @@ export default function AudioPlayer(): ReactElement {
   async function loadRandomAudioTrack(): Promise<void> {
     resetPlayer();
 
-    const audioTrack = await getNewAudioTrack();
+    const id = await fetchRandomItemId();
+    const audioTrack = await getAudioTrack(id);
 
     setAudioTrack(audioTrack);
   }

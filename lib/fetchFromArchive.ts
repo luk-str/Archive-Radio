@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const searchPagesRange: number = 100;
-const resultsAmount: number = 10;
 
 const collections: string[] = [
   "78rpm",
@@ -40,8 +39,7 @@ type File = {
   format?: string;
 };
 
-async function getNewAudioTrack(): Promise<AudioTrack> {
-  const id = await fetchRandomItemId();
+export async function getAudioTrack(id: string): Promise<AudioTrack> {
   const metadata = await fetchMetadata(id);
 
   const itemMetadata = metadata.metadata;
@@ -82,23 +80,23 @@ async function getNewAudioTrack(): Promise<AudioTrack> {
   return audioTrack;
 }
 
-async function fetchRandomItemId(): Promise<string> {
+export async function fetchRandomItemId(): Promise<string> {
   return axios
     .get(getSearchUrl())
     .then((response) => response.data.response.docs[0].identifier)
     .catch((err) => {
       console.log(err);
-      getNewAudioTrack();
+      fetchRandomItemId();
     });
 }
 
-async function fetchMetadata(itemId: string): Promise<Metadata> {
+async function fetchMetadata(id: string): Promise<Metadata> {
   return axios
-    .get(`https://archive.org/metadata/${itemId}`)
+    .get(`https://archive.org/metadata/${id}`)
     .then((response) => response.data)
     .catch((err) => {
       console.log(err);
-      getNewAudioTrack();
+      fetchMetadata(id);
     });
 }
 
@@ -113,5 +111,3 @@ function getRandomCollection(): string {
 function getRandomPageNumber(): number {
   return Math.floor(Math.random() * searchPagesRange);
 }
-
-export { getNewAudioTrack };
