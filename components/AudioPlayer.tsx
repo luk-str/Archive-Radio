@@ -1,6 +1,5 @@
 import styles from "./AudioPlayer.module.css";
 import { useState, useEffect, ReactElement, useRef } from "react";
-import Image from "next/image";
 import {
   getAudioTrack,
   fetchRandomItemId,
@@ -9,6 +8,7 @@ import {
 import Controls from "./Controls";
 import Metadata from "./Metadata";
 import Progress from "./Progress";
+import AlbumArt from "./AlbumArt";
 
 type AudioTrack = {
   id?: string;
@@ -20,8 +20,6 @@ type AudioTrack = {
   imageSourceUrl?: string;
   archivePageUrl?: string;
 };
-
-const placeholderImage: string = "/img/cover-fallback.png";
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
@@ -149,16 +147,14 @@ export default function AudioPlayer(): ReactElement {
               {!isPlaying ? "►" : "∥∥"}
             </button>
 
-            <Image
-              src={audioTrack.imageSourceUrl || placeholderImage}
-              alt="album art"
-              layout="fill"
-              onError={() => {
+            <AlbumArt
+              imageSourceUrl={audioTrack.imageSourceUrl}
+              handleImageError={(imageUrl) =>
                 setAudioTrack({
                   ...audioTrack,
-                  imageSourceUrl: placeholderImage,
-                });
-              }}
+                  imageSourceUrl: imageUrl,
+                })
+              }
             />
           </section>
 
