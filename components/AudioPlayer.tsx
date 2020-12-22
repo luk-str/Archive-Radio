@@ -28,7 +28,7 @@ export default function AudioPlayer(): ReactElement {
   const [duration, setDuration] = useState<number>();
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
-  const [trackMemory, setTrackMemory] = useState<AudioTrack[]>([]); // TODO: Change memory from storing id's to storing whole metadata objects to skip fetching metadata every time
+  const [trackMemory, setTrackMemory] = useState<AudioTrack[]>([]);
 
   const audioElement = useRef<HTMLAudioElement>(null);
 
