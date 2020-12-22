@@ -8,6 +8,7 @@ import {
 } from "../lib/fetchFromArchive";
 import { convertSecondsToMinSec } from "../lib/convertMetadata";
 import Controls from "./Controls";
+import Metadata from "./Metadata";
 
 type AudioTrack = {
   id?: string;
@@ -136,9 +137,7 @@ export default function AudioPlayer(): ReactElement {
 
       {isAudioReady ? (
         <>
-          <h3>{audioTrack.author}</h3>
-          <h2>{audioTrack.title}</h2>
-          <h4>{audioTrack.year}</h4>
+          <Metadata audioTrack={audioTrack} />
 
           <section className={styles.coverImage__container}>
             <button
