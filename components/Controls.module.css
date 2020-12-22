@@ -1,0 +1,15 @@
+.changeTrackButton {
+  display: inline-block;
+  border: none;
+  padding: 0rem;
+  margin: 2rem;
+  font-size: 3rem;
+  color: #00f;
+  transition: 300ms;
+}
+
+.changeTrackButton:hover,
+.changeTrackButton:focus {
+  transform: scale(1.1);
+  transition: 100ms;
+}

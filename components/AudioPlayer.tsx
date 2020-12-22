@@ -7,6 +7,7 @@ import {
   fetchMetadata,
 } from "../lib/fetchFromArchive";
 import { convertSecondsToMinSec } from "../lib/convertMetadata";
+import Controls from "./Controls";
 
 type AudioTrack = {
   id?: string;
@@ -82,9 +83,11 @@ export default function AudioPlayer(): ReactElement {
     }
   }
 
-  async function loadPreviousTrack(): Promise<void> {
+  function loadPreviousTrack(): void {
     const currentTrackMemoryIndex: number = trackMemory.indexOf(audioTrack);
     const previousTrack: AudioTrack = trackMemory[currentTrackMemoryIndex - 1];
+
+    if (currentTrackMemoryIndex === 0) return;
 
     resetPlayer();
 
@@ -176,24 +179,11 @@ export default function AudioPlayer(): ReactElement {
             autoplay
           </label>
 
-          <nav>
-            {/* Only display "previous" button when there's more than 1 element in memory & current Track isn't the first in memory */}
-            {trackMemory.length > 1 && trackMemory.indexOf(audioTrack) > 0 && (
-              <button
-                onClick={() => loadPreviousTrack()}
-                className={styles.changeTrackButton}
-              >
-                ☜
-              </button>
-            )}
-
-            <button
-              onClick={() => loadNextTrack()}
-              className={styles.changeTrackButton}
-            >
-              ☞
-            </button>
-          </nav>
+          <Controls
+            loadPreviousTrack={loadPreviousTrack}
+            loadNextTrack={loadNextTrack}
+            isAudioReady={isAudioReady}
+          />
         </>
       ) : (
         <section className={styles.loadingTextContainer}>
