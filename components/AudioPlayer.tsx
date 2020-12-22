@@ -6,9 +6,9 @@ import {
   fetchRandomItemId,
   fetchMetadata,
 } from "../lib/fetchFromArchive";
-import { convertSecondsToMinSec } from "../lib/convertMetadata";
 import Controls from "./Controls";
 import Metadata from "./Metadata";
+import Progress from "./Progress";
 
 type AudioTrack = {
   id?: string;
@@ -161,11 +161,8 @@ export default function AudioPlayer(): ReactElement {
               }}
             />
           </section>
-          <h5>
-            {`${convertSecondsToMinSec(
-              currentPosition
-            )} / ${convertSecondsToMinSec(duration)}`}
-          </h5>
+
+          <Progress currentPosition={currentPosition} duration={duration} />
 
           <input
             type="checkbox"
