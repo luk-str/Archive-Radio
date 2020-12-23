@@ -14,6 +14,7 @@ type Props = {
   isPlaying: boolean;
   isAudioReady: boolean;
   isAutoplayOn: boolean;
+  isThereAPreviousTrack: boolean;
 };
 
 const Controls = ({
@@ -24,6 +25,7 @@ const Controls = ({
   isPlaying,
   isAudioReady,
   isAutoplayOn,
+  isThereAPreviousTrack,
 }: Props) => {
   return (
     <nav>
@@ -46,8 +48,8 @@ const Controls = ({
         <button
           onClick={() => loadPreviousTrack()}
           className={`${styles.changeTrackButton} ${
-            !isAudioReady && styles.inactive
-          }`}
+            !isThereAPreviousTrack && styles.inactive
+          } ${!isAudioReady && styles.inactive}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

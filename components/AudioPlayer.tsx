@@ -165,6 +165,9 @@ export default function AudioPlayer(): ReactElement {
         isAudioReady={isAudioReady}
         isPlaying={isPlaying}
         isAutoplayOn={isAutoplayOn}
+        isThereAPreviousTrack={
+          trackMemory.length > 1 && trackMemory.indexOf(audioTrack) > 0
+        }
       />
     </article>
   );
