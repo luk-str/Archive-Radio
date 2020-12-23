@@ -34,13 +34,3 @@ main {
   padding: 0 3rem;
   text-align: center;
 }
-
-button {
-  font-family: "Space Grotesk", sans-serif;
-  display: block;
-  background: none;
-  margin: 0.5rem auto;
-  padding: 1em 1.5em;
-  border: 2px solid #ccc;
-  cursor: pointer;
-}
