@@ -138,15 +138,6 @@ export default function AudioPlayer(): ReactElement {
           <Metadata audioTrack={audioTrack} />
 
           <section className={styles.coverImage__container}>
-            <button
-              onClick={playPause}
-              className={`${styles.playButton} ${
-                !isPlaying && styles.playButton_paused
-              }`}
-            >
-              {!isPlaying ? "►" : "∥∥"}
-            </button>
-
             <AlbumArt
               imageSourceUrl={audioTrack.imageSourceUrl}
               handleImageError={(imageUrl) =>
@@ -160,21 +151,14 @@ export default function AudioPlayer(): ReactElement {
 
           <Progress currentPosition={currentPosition} duration={duration} />
 
-          <input
-            type="checkbox"
-            id="autoplay"
-            name="autoplay"
-            checked={isAutoplayOn}
-            onChange={() => setIsAutoplayOn(!isAutoplayOn)}
-          />
-          <label htmlFor="autoplay" className={styles.checkboxLabel}>
-            autoplay
-          </label>
-
           <Controls
             loadPreviousTrack={loadPreviousTrack}
             loadNextTrack={loadNextTrack}
+            playPause={playPause}
+            toggleAutoplay={() => setIsAutoplayOn(!isAutoplayOn)}
             isAudioReady={isAudioReady}
+            isPlaying={isPlaying}
+            isAutoplayOn={isAutoplayOn}
           />
         </>
       ) : (

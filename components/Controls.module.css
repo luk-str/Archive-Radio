@@ -13,3 +13,8 @@
   transform: scale(1.1);
   transition: 100ms;
 }
+
+.checkboxLabel {
+  padding-left: 0.4em;
+  cursor: pointer;
+}
