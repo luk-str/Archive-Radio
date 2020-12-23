@@ -11,12 +11,19 @@
 
 .changeTrackButton {
   color: #333;
-  width: 20%;
-  height: 60%;
   font-size: clamp(2rem, 7vw, 4rem);
   border: none;
-  margin: 2rem 0.5rem;
-  padding: 0;
+  margin: 1rem 0.5rem;
+  padding: 0.5rem min(3rem, 10vw);
+  transition: 0.1s;
+}
+
+.changeTrackButton:hover {
+  transform: scale(1.1);
+}
+
+.changeTrackButton:active {
+  transform: scale(0.9);
 }
 
 .checkboxLabel {
