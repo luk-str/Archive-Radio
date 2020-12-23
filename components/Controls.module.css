@@ -11,7 +11,6 @@
 
 .changeTrackButton {
   color: #333;
-  font-size: clamp(2rem, 7vw, 4rem);
   border: none;
   margin: 1rem 0.5rem;
   padding: 0.5rem min(3rem, 10vw);
@@ -25,6 +24,10 @@
 
 .changeTrackButton:active {
   transform: scale(0.9);
+}
+
+.checkboxSection {
+  margin-bottom: 6rem;
 }
 
 .checkboxLabel {

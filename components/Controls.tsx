@@ -30,7 +30,7 @@ const Controls = ({
   return (
     <nav>
       {isAudioReady && (
-        <section>
+        <section className={styles.checkboxSection}>
           <input
             type="checkbox"
             id="autoplay"
