@@ -150,22 +150,22 @@ export default function AudioPlayer(): ReactElement {
           </section>
 
           <Progress currentPosition={currentPosition} duration={duration} />
-
-          <Controls
-            loadPreviousTrack={loadPreviousTrack}
-            loadNextTrack={loadNextTrack}
-            playPause={playPause}
-            toggleAutoplay={() => setIsAutoplayOn(!isAutoplayOn)}
-            isAudioReady={isAudioReady}
-            isPlaying={isPlaying}
-            isAutoplayOn={isAutoplayOn}
-          />
         </>
       ) : (
         <section className={styles.loadingTextContainer}>
           <h2 className={styles.loadingText}>Looking for a new song...</h2>
         </section>
       )}
+
+      <Controls
+        loadPreviousTrack={loadPreviousTrack}
+        loadNextTrack={loadNextTrack}
+        playPause={playPause}
+        toggleAutoplay={() => setIsAutoplayOn(!isAutoplayOn)}
+        isAudioReady={isAudioReady}
+        isPlaying={isPlaying}
+        isAutoplayOn={isAutoplayOn}
+      />
     </article>
   );
 }
