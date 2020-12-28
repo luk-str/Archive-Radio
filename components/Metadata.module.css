@@ -1,0 +1,31 @@
+.metadata__container {
+  --title-width: clamp(10rem, 40vh, 25rem);
+}
+
+.title__container {
+  position: relative;
+  margin: 0 auto;
+  width: var(--title-width);
+  height: 3em;
+  line-height: 0.5;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.title--animated {
+  animation: textScroll 10s linear infinite alternate;
+  animation-delay: 3s;
+  position: absolute;
+}
+
+@keyframes textScroll {
+  0%,
+  10% {
+    transform: translate(0, 0);
+  }
+
+  90%,
+  100% {
+    transform: translate(calc(-100% + var(--title-width)), 0);
+  }
+}
