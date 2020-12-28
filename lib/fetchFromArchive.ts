@@ -63,9 +63,13 @@ export function getAudioTrack(itemMetadata: Metadata): AudioTrack {
     (file: File) => file.format === "Item Image"
   );
 
-  const audioSourceUrl = `https://archive.org/download/${id}/${audioFile?.name}`;
-  const imageSourceUrl = `https://archive.org/download/${id}/${imageFile?.name}`;
-  const archivePageUrl: string = `https://archive.org/details/${id}`;
+  const audioSourceUrl: string = encodeURI(
+    `https://archive.org/download/${id}/${audioFile?.name}`
+  );
+  const imageSourceUrl: string = encodeURI(
+    `https://archive.org/download/${id}/${imageFile?.name}`
+  );
+  const archivePageUrl: string = encodeURI(`https://archive.org/details/${id}`);
 
   return {
     id,
@@ -91,7 +95,7 @@ export async function fetchRandomItemId(): Promise<string> {
 
 export async function fetchMetadata(id: string): Promise<Metadata> {
   return axios
-    .get(`https://archive.org/metadata/${id}`)
+    .get(encodeURI(`https://archive.org/metadata/${id}`))
     .then((response) => response.data)
     .catch((err) => {
       console.log(err);
@@ -100,7 +104,9 @@ export async function fetchMetadata(id: string): Promise<Metadata> {
 }
 
 function getSearchUrl(): string {
-  return `https://archive.org/advancedsearch.php?q=collection:(${getRandomCollection()})+AND+mediatype:(audio)&fl[]=identifier&fl[]=creator&fl[]=title&fl[]=year&fl[]=creator&sort[]=__random+desc&rows=1&page=${getRandomPageNumber()}&output=json`;
+  return encodeURI(
+    `https://archive.org/advancedsearch.php?q=collection:(${getRandomCollection()})+AND+mediatype:(audio)&fl[]=identifier&fl[]=creator&fl[]=title&fl[]=year&fl[]=creator&sort[]=__random+desc&rows=1&page=${getRandomPageNumber()}&output=json`
+  );
 }
 
 function getRandomCollection(): string {
