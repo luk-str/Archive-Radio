@@ -136,7 +136,7 @@ export default function AudioPlayer(): ReactElement {
     }
   }
 
-  function fadeOutAudio() {
+  function fadeOutAudio(): void {
     const audio = audioElement.current;
 
     const fade = setInterval(() => {
