@@ -9,6 +9,7 @@ import Controls from "./Controls";
 import Metadata from "./Metadata";
 import Progress from "./Progress";
 import AlbumArt from "./AlbumArt";
+import Head from "next/head";
 
 type AudioTrack = {
   id?: string;
@@ -127,6 +128,14 @@ export default function AudioPlayer(): ReactElement {
 
   return (
     <article>
+      <Head>
+        <title>
+          {isAudioReady
+            ? `${audioTrack.title} | Archive Radio`
+            : "Archive Radio"}
+        </title>
+      </Head>
+
       <audio
         src={audioTrack.audioSourceUrl}
         ref={audioElement}
