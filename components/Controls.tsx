@@ -46,6 +46,7 @@ const Controls = ({
 
       <section className={styles.container}>
         <button
+          aria-label="Load previous audio track"
           onClick={() => loadPreviousTrack()}
           className={`${styles.changeTrackButton} ${
             !isThereAPreviousTrack && styles.inactive
@@ -61,6 +62,7 @@ const Controls = ({
         </button>
 
         <button
+          aria-label={!isPlaying ? "Play" : "Pause"}
           onClick={playPause}
           className={`${styles.changeTrackButton} ${
             !isAudioReady && styles.inactive
@@ -76,6 +78,7 @@ const Controls = ({
         </button>
 
         <button
+          aria-label="Load next audio track"
           onClick={() => loadNextTrack()}
           className={`${styles.changeTrackButton} ${
             !isAudioReady && styles.inactive
