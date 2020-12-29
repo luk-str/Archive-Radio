@@ -46,10 +46,23 @@ export default function AudioPlayer(): ReactElement {
     };
 
     audio.ontimeupdate = () => setCurrentPosition(audio.currentTime);
-    audio.onplay = () => setIsPlaying(true);
-    audio.onpause = () => setIsPlaying(false);
-    audio.onended = () => loadRandomAudioTrack();
-    audio.onerror = () => loadRandomAudioTrack();
+    audio.onplay = () => {
+      audioElement.current.volume = 1;
+      setIsPlaying(true);
+      setIsAutoplayOn(true);
+    };
+    audio.onpause = () => {
+      setIsPlaying(false);
+      setIsAutoplayOn(false);
+    };
+    audio.onended = () => {
+      resetPlayer();
+      loadRandomAudioTrack();
+    };
+    audio.onerror = () => {
+      resetPlayer();
+      loadRandomAudioTrack();
+    };
   }, []);
 
   // Update track memory when audio is valid and ready to play
@@ -73,6 +86,7 @@ export default function AudioPlayer(): ReactElement {
 
     // Load new random track if current track is the last in the memory
     if (currentTrackMemoryIndex === trackMemory.length - 1) {
+      resetPlayer();
       loadRandomAudioTrack();
     } else {
       // Otherwise load the next track from memory
@@ -95,8 +109,6 @@ export default function AudioPlayer(): ReactElement {
   }
 
   async function loadRandomAudioTrack(): Promise<void> {
-    resetPlayer();
-
     const id = await fetchRandomItemId();
     const itemMetadata = await fetchMetadata(id);
 
@@ -108,7 +120,7 @@ export default function AudioPlayer(): ReactElement {
   // Controlling the Audio Player
 
   function resetPlayer(): void {
-    audioElement.current.pause();
+    fadeOutAudio();
     setIsPlaying(false);
     setIsAudioReady(false);
     setAudioTrack({});
@@ -122,6 +134,19 @@ export default function AudioPlayer(): ReactElement {
     } else {
       audio.pause();
     }
+  }
+
+  function fadeOutAudio() {
+    const audio = audioElement.current;
+
+    const fade = setInterval(() => {
+      if (audio.volume > 0) {
+        // The value has to be rounded each time to avoid weird calculation errors with funky decimals
+        audio.volume = +(audio.volume - 0.1).toFixed(2);
+      } else {
+        clearInterval(fade);
+      }
+    }, 30);
   }
 
   // RENDER
@@ -170,10 +195,8 @@ export default function AudioPlayer(): ReactElement {
         loadPreviousTrack={loadPreviousTrack}
         loadNextTrack={loadNextTrack}
         playPause={playPause}
-        toggleAutoplay={() => setIsAutoplayOn(!isAutoplayOn)}
         isAudioReady={isAudioReady}
         isPlaying={isPlaying}
-        isAutoplayOn={isAutoplayOn}
         isThereAPreviousTrack={
           trackMemory.length > 1 && trackMemory.indexOf(audioTrack) > 0
         }
