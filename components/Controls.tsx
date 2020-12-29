@@ -10,10 +10,8 @@ type Props = {
   loadPreviousTrack: () => void;
   loadNextTrack: () => void;
   playPause: () => void;
-  toggleAutoplay: () => void;
   isPlaying: boolean;
   isAudioReady: boolean;
-  isAutoplayOn: boolean;
   isThereAPreviousTrack: boolean;
 };
 
@@ -21,29 +19,12 @@ const Controls = ({
   loadPreviousTrack,
   loadNextTrack,
   playPause,
-  toggleAutoplay,
   isPlaying,
   isAudioReady,
-  isAutoplayOn,
   isThereAPreviousTrack,
 }: Props) => {
   return (
     <nav>
-      {isAudioReady && (
-        <section className={styles.checkboxSection}>
-          <input
-            type="checkbox"
-            id="autoplay"
-            name="autoplay"
-            checked={isAutoplayOn}
-            onChange={toggleAutoplay}
-          />
-          <label htmlFor="autoplay" className={styles.checkboxLabel}>
-            autoplay
-          </label>
-        </section>
-      )}
-
       <section className={styles.container}>
         <button
           aria-label="Load previous audio track"
