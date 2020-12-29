@@ -136,7 +136,7 @@ export default function AudioPlayer(): ReactElement {
     }
   }
 
-  function fadeOutAudio() {
+  function fadeOutAudio(): void {
     const audio = audioElement.current;
 
     const fade = setInterval(() => {
@@ -152,7 +152,7 @@ export default function AudioPlayer(): ReactElement {
   // RENDER
 
   return (
-    <article>
+    <>
       <Head>
         <title>
           {isAudioReady
@@ -168,7 +168,7 @@ export default function AudioPlayer(): ReactElement {
       ></audio>
 
       {isAudioReady ? (
-        <>
+        <article className={styles.player__container}>
           <Metadata audioTrack={audioTrack} />
 
           <section className={styles.coverImage__container}>
@@ -184,7 +184,7 @@ export default function AudioPlayer(): ReactElement {
           </section>
 
           <Progress currentPosition={currentPosition} duration={duration} />
-        </>
+        </article>
       ) : (
         <section className={styles.loadingTextContainer}>
           <h2 className={styles.loadingText}>Looking for a new song...</h2>
@@ -201,6 +201,6 @@ export default function AudioPlayer(): ReactElement {
           trackMemory.length > 1 && trackMemory.indexOf(audioTrack) > 0
         }
       />
-    </article>
+    </>
   );
 }

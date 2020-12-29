@@ -1,9 +1,10 @@
 import Head from "next/head";
+import Header from "components/Header";
 import AudioPlayer from "../components/AudioPlayer";
 
 export default function Home() {
   return (
-    <div>
+    <>
       <Head>
         <meta
           name="description"
@@ -29,13 +30,11 @@ export default function Home() {
         <link rel="manifest" href="favicon/site.webmanifest" />
       </Head>
 
-      <header>
-        <h1>Archive Radio</h1>
-      </header>
+      <Header />
 
       <main>
         <AudioPlayer />
       </main>
-    </div>
+    </>
   );
 }
