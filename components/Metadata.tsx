@@ -23,13 +23,15 @@ const Metadata = ({ audioTrack }: Props) => {
   return (
     <article className={styles.metadata__container}>
       <section className={styles.author__container}>
-        <h3>{audioTrack.author}</h3>
+        <h3 className={styles.author}>{audioTrack.author}</h3>
       </section>
 
       <section className={styles.title__container}>
         <h2
           ref={titleElement}
-          className={isTextOverflowing ? styles["title--animated"] : ""}
+          className={`${styles.title} ${
+            isTextOverflowing ? styles["title--animated"] : ""
+          }`}
         >
           {audioTrack.title}
         </h2>

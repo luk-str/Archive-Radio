@@ -1,15 +1,16 @@
 .header__container {
   background: #eee;
-  height: 5rem;
+  height: min(10vh, 5rem);
   position: sticky;
   top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1;
+  
 }
 
 .header__title {
   color: #333;
-  font-size: 1.4rem;
+  font-size: clamp(0.9rem, min(3vh, 6vw), 1.5rem);
 }

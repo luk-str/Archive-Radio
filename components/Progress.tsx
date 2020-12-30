@@ -1,4 +1,5 @@
 import { convertSecondsToMinSec } from "../lib/convertMetadata";
+import styles from "./Progress.module.css";
 
 type Props = {
   currentPosition: number;
@@ -8,7 +9,7 @@ type Props = {
 const Progress = ({ currentPosition, duration }: Props) => {
   return (
     <>
-      <h5>
+      <h5 className={styles.progress}>
         {`${convertSecondsToMinSec(currentPosition)} / ${convertSecondsToMinSec(
           duration
         )}`}

@@ -6,14 +6,20 @@
   position: relative;
   margin: 0 auto;
   width: var(--title-width);
-  height: 3em;
-  line-height: 0.5;
   white-space: nowrap;
   overflow: hidden;
 }
 
+.title {
+  font-size: clamp(0.9rem, min(3vh, 6vw), 1.5rem);
+}
+
 .author__container {
   width: var(--title-width);
+}
+
+.author {
+  font-size: clamp(0.7rem, min(2vh, 4vw), 1.1rem);
 }
 
 .title--animated {

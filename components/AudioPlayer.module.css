@@ -1,4 +1,5 @@
 .player__container {
+  padding-top: 1rem;
   padding-bottom: 5rem;
   min-height: 90vh;
   display: flex;
