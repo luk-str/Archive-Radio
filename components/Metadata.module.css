@@ -1,5 +1,5 @@
 .metadata__container {
-  --title-width: clamp(10rem, 40vh, 25rem);
+  --title-width: min(50vh, 80vw);
 }
 
 .title__container {
@@ -10,6 +10,10 @@
   line-height: 0.5;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.author__container {
+  width: var(--title-width);
 }
 
 .title--animated {

@@ -1,17 +1,16 @@
 .player__container {
-  position: fixed;
-  margin: 2rem auto;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  padding-bottom: 5rem;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .coverImage__container {
   position: relative;
-  margin: 2rem auto 3rem;
-  height: clamp(10rem, 40vh, 25rem);
-  width: clamp(10rem, 40vh, 25rem);
-  display: flex;
+  width: min(50vh, 80vw);
+  height: min(50vh, 80vw);
   border-radius: 7%;
   overflow: hidden;
   background-color: #222;

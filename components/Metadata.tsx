@@ -22,7 +22,9 @@ const Metadata = ({ audioTrack }: Props) => {
 
   return (
     <article className={styles.metadata__container}>
-      <h3>{audioTrack.author}</h3>
+      <section className={styles.author__container}>
+        <h3>{audioTrack.author}</h3>
+      </section>
 
       <section className={styles.title__container}>
         <h2
