@@ -16,6 +16,7 @@ const AlbumArt = ({ imageSourceUrl, handleImageError }: Props) => {
         src={imageSourceUrl || placeholderImagePath}
         alt="album art"
         layout="fill"
+        loading={"lazy"}
         onError={() => {
           handleImageError(placeholderImagePath);
         }}
