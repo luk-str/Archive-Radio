@@ -43,11 +43,11 @@ export default function AudioPlayer(): ReactElement {
     audio.ondurationchange = () => {
       setDuration(audio.duration);
       setIsAudioReady(true);
+      fadeInAudio();
     };
 
     audio.ontimeupdate = () => setCurrentPosition(audio.currentTime);
     audio.onplay = () => {
-      audioElement.current.volume = 1;
       setIsPlaying(true);
       setIsAutoplayOn(true);
     };
@@ -151,6 +151,19 @@ export default function AudioPlayer(): ReactElement {
     }, 30);
   }
 
+  function fadeInAudio(): void {
+    const audio = audioElement.current;
+
+    const fade = setInterval(() => {
+      if (audio.volume < 1) {
+        // The value has to be rounded each time to avoid weird calculation errors with funky decimals
+        audio.volume = +(audio.volume + 0.1).toFixed(2);
+      } else {
+        clearInterval(fade);
+      }
+    }, 100);
+  }
+
   // RENDER
 
   return (
@@ -174,15 +187,7 @@ export default function AudioPlayer(): ReactElement {
           <Metadata audioTrack={audioTrack} />
 
           <section className={styles.coverImage__container}>
-            <AlbumArt
-              imageSourceUrl={audioTrack.imageSourceUrl}
-              handleImageError={(imageUrl) =>
-                setAudioTrack({
-                  ...audioTrack,
-                  imageSourceUrl: imageUrl,
-                })
-              }
-            />
+            <AlbumArt imageSourceUrl={audioTrack.imageSourceUrl} />
           </section>
 
           <Progress currentPosition={currentPosition} duration={duration} />
