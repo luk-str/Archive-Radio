@@ -83,9 +83,11 @@ export default function AudioPlayer(): ReactElement {
   function loadNextTrack(): void {
     // Check the index of current audio before resetting
     const currentTrackMemoryIndex: number = trackMemory.indexOf(audioTrack);
+    const isLastTrackInMemory: boolean =
+      currentTrackMemoryIndex === trackMemory.length - 1;
 
     // Load new random track if current track is the last in the memory
-    if (currentTrackMemoryIndex === trackMemory.length - 1) {
+    if (isLastTrackInMemory || currentTrackMemoryIndex < 0) {
       resetPlayer();
       loadRandomAudioTrack();
     } else {
