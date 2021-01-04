@@ -5,6 +5,7 @@ import {
   fetchRandomItemId,
   fetchMetadata,
 } from "../lib/fetchFromArchive";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Controls from "./Controls";
 import Metadata from "./Metadata";
 import Progress from "./Progress";
@@ -182,21 +183,39 @@ export default function AudioPlayer(): ReactElement {
         autoPlay={isAutoplayOn}
       ></audio>
 
-      {isAudioReady ? (
-        <article className={styles.player__container}>
-          <Metadata audioTrack={audioTrack} />
+      <TransitionGroup>
+        {isAudioReady ? (
+          <CSSTransition
+            in={isAudioReady}
+            appear={true}
+            key={audioTrack.id}
+            timeout={1500}
+            classNames={{ ...styles }}
+          >
+            <article className={styles.player__container}>
+              <Metadata audioTrack={audioTrack} />
 
-          <section className={styles.coverImage__container}>
-            <AlbumArt imageSourceUrl={audioTrack.imageSourceUrl} />
-          </section>
+              <section className={styles.coverImage__container}>
+                <AlbumArt imageSourceUrl={audioTrack.imageSourceUrl} />
+              </section>
 
-          <Progress currentPosition={currentPosition} duration={duration} />
-        </article>
-      ) : (
-        <section className={styles.loadingTextContainer}>
-          <h2 className={styles.loadingText}>Looking for a new song...</h2>
-        </section>
-      )}
+              <Progress currentPosition={currentPosition} duration={duration} />
+            </article>
+          </CSSTransition>
+        ) : (
+          <CSSTransition
+            in={isAudioReady}
+            appear={true}
+            key={"loader"}
+            timeout={1500}
+            classNames={{ ...styles }}
+          >
+            <section className={styles.loadingTextContainer}>
+              <h2 className={styles.loadingText}>Looking for a new song...</h2>
+            </section>
+          </CSSTransition>
+        )}
+      </TransitionGroup>
 
       <Controls
         loadPreviousTrack={loadPreviousTrack}

@@ -19,3 +19,7 @@ on element after mouse click */
 :focus:not(:focus-visible) {
   outline: 0;
 }
+
+main {
+  overflow-x: hidden;
+}

@@ -1,3 +1,33 @@
+.appear {
+  opacity: 0;
+}
+
+.appearActive {
+  opacity: 1;
+  transition: 100ms ease-in;
+}
+
+.enter {
+  opacity: 0;
+  transform: translateX(30%);
+}
+
+.enterActive {
+  opacity: 1;
+  transform: translateX(0);
+  transition: transform 1000ms ease-out, opacity 900ms ease-out 300ms;
+}
+
+.exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.exitActive {
+  opacity: 0;
+  transform: translateX(-30%);
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
 .player__container {
   padding-top: 1rem;
   padding-bottom: 5rem;
@@ -16,6 +46,10 @@
   border-radius: 7%;
   overflow: hidden;
   background-color: #eee;
+
+  /* Fix for bug showing image overflow on transition on webkit */
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 .loadingTextContainer {
