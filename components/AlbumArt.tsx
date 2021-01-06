@@ -27,7 +27,9 @@ const AlbumArt = ({ imageSourceUrl }: Props) => {
       <Image
         src={imageSource}
         alt="album art"
-        layout="fill"
+        layout="responsive"
+        width="200"
+        height="200"
         onLoad={handleOnLoad}
         onError={handleOnError}
         className={isImageReady ? styles.visible : styles.hidden}

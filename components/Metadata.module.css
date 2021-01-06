@@ -12,6 +12,7 @@
 
 .title {
   font-size: clamp(0.9rem, min(3vh, 6vw), 1.5rem);
+  margin: 0;
 }
 
 .author__container {
@@ -19,6 +20,14 @@
 }
 
 .author {
+  font-size: clamp(0.7rem, min(2vh, 4vw), 1.1rem);
+}
+
+.year__container {
+  width: var(--title-width);
+}
+
+.year {
   font-size: clamp(0.7rem, min(2vh, 4vw), 1.1rem);
 }
 

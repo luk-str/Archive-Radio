@@ -36,8 +36,9 @@ const Metadata = ({ audioTrack }: Props) => {
           {audioTrack.title}
         </h2>
       </section>
-
-      <h4>{audioTrack.year}</h4>
+      <section className={styles.year__container}>
+        <h4 className={styles.year}>{audioTrack.year}</h4>
+      </section>
     </article>
   );
 };
