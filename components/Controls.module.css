@@ -16,6 +16,7 @@
   margin: 1rem 0.5rem;
   padding: 0.5rem min(3rem, 10vw);
   transition: transform 0.1s, opacity 1s;
+  border-radius: 50%;
   cursor: pointer;
 }
 
