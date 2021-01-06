@@ -1,5 +1,5 @@
 .metadata__container {
-  --title-width: min(50vh, 80vw);
+  --title-width: min(40vh, 70vw);
 }
 
 .title__container {
@@ -8,6 +8,7 @@
   width: var(--title-width);
   white-space: nowrap;
   overflow: hidden;
+  height: 2rem;
 }
 
 .title {
