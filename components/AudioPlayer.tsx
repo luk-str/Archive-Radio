@@ -58,6 +58,7 @@ export default function AudioPlayer(): ReactElement {
     };
     audio.onended = () => {
       resetPlayer();
+      setIsAutoplayOn(true);
       loadRandomAudioTrack();
     };
     audio.onerror = () => {
