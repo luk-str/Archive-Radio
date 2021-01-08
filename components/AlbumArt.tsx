@@ -10,7 +10,7 @@ export default function AlbumArt({ imageSourceUrl }: Props) {
   const [imageSource, setImageSource] = useState<string>(imageSourceUrl);
   const [isImageReady, setIsImageReady] = useState<boolean>(false);
 
-  const placeholderImagePath = "/img/cover-fallback.png";
+  const fallbackImagePath = "/img/cover-fallback.png";
 
   function handleOnLoad(e: ChangeEvent<HTMLImageElement>) {
     if (e.target.srcset) {
@@ -27,7 +27,7 @@ export default function AlbumArt({ imageSourceUrl }: Props) {
         width="200"
         height="200"
         onLoad={handleOnLoad}
-        onError={() => setImageSource(placeholderImagePath)}
+        onError={() => setImageSource(fallbackImagePath)}
         className={isImageReady ? styles.visible : styles.hidden}
       />
     </>
