@@ -1,27 +1,17 @@
-import styles from "./AudioPlayer.module.css";
 import { useState, useEffect, ReactElement, useRef } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import Head from "next/head";
+import styles from "./AudioPlayer.module.css";
+import type { AudioTrack } from "../lib/types";
 import {
   getAudioTrack,
   fetchRandomItemId,
   fetchMetadata,
 } from "../lib/fetchFromArchive";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Controls from "./Controls";
 import Metadata from "./Metadata";
 import Progress from "./Progress";
 import AlbumArt from "./AlbumArt";
-import Head from "next/head";
-
-type AudioTrack = {
-  id?: string;
-  title?: string;
-  year?: string;
-  author?: string;
-  description?: string;
-  audioSourceUrl?: string;
-  imageSourceUrl?: string;
-  archivePageUrl?: string;
-};
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
