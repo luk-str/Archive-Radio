@@ -1,13 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Metadata.module.css";
+import type { AudioTrack } from "../lib/types";
 
 type Props = {
-  audioTrack: {
-    title?: string;
-    year?: string;
-    author?: string;
-    description?: string;
-  };
+  audioTrack: AudioTrack;
 };
 
 const Metadata = ({ audioTrack }: Props) => {
