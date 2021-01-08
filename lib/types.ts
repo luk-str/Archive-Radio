@@ -17,7 +17,7 @@ export type Metadata = {
     description?: string;
     creator?: string;
   };
-  files?: [];
+  files?: File[];
 };
 
 export type File = {

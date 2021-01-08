@@ -4,9 +4,9 @@ import Head from "next/head";
 import styles from "./AudioPlayer.module.css";
 import type { AudioTrack } from "../lib/types";
 import {
-  getAudioTrack,
-  fetchRandomItemId,
-  fetchMetadata,
+  createAudioTrackObject,
+  getRandomItemId,
+  getItemMetadata,
 } from "../lib/fetchFromArchive";
 import Controls from "./Controls";
 import Metadata from "./Metadata";
@@ -93,9 +93,9 @@ export default function AudioPlayer(): ReactElement {
 
   // Fetches and loads a new random audio track from Internet Archive
   async function loadRandomAudioTrack(): Promise<void> {
-    const id = await fetchRandomItemId();
-    const itemMetadata = await fetchMetadata(id);
-    const audioTrack = getAudioTrack(itemMetadata);
+    const id = await getRandomItemId();
+    const itemMetadata = await getItemMetadata(id);
+    const audioTrack = createAudioTrackObject(itemMetadata);
 
     setAudioTrack(audioTrack);
   }
