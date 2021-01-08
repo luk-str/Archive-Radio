@@ -8,3 +8,19 @@ export type AudioTrack = {
   imageSourceUrl?: string;
   archivePageUrl?: string;
 };
+
+export type Metadata = {
+  metadata?: {
+    identifier?: string;
+    title?: string;
+    year?: string;
+    description?: string;
+    creator?: string;
+  };
+  files?: [];
+};
+
+export type File = {
+  name?: string;
+  format?: string;
+};

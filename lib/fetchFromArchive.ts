@@ -1,7 +1,8 @@
 import axios from "axios";
+import type { AudioTrack, Metadata, File } from "./types";
 
+// Search Settings
 const searchPagesRange: number = 100;
-
 const collections: string[] = [
   "78rpm",
   "78rpm_bostonpubliclibrary",
@@ -12,33 +13,6 @@ const collections: string[] = [
   "pogonyi-cds",
   "unlockedrecordings",
 ];
-
-type Metadata = {
-  metadata?: {
-    identifier?: string;
-    title?: string;
-    year?: string;
-    description?: string;
-    creator?: string;
-  };
-  files?: [];
-};
-
-type AudioTrack = {
-  id?: string;
-  title?: string;
-  year?: string;
-  author?: string;
-  description: string;
-  audioSourceUrl: string;
-  imageSourceUrl: string;
-  archivePageUrl: string;
-};
-
-type File = {
-  name?: string;
-  format?: string;
-};
 
 export function getAudioTrack(itemMetadata: Metadata): AudioTrack {
   const itemInfo = itemMetadata.metadata;
