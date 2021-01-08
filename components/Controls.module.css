@@ -9,7 +9,7 @@
   align-items: center;
 }
 
-.changeTrackButton {
+.button {
   color: #333;
   background: none;
   border: none;
@@ -20,24 +20,15 @@
   cursor: pointer;
 }
 
-.changeTrackButton:hover {
+.button:hover {
   transform: scale(1.1);
 }
 
-.changeTrackButton:active {
+.button:active {
   transform: scale(0.9);
 }
 
-.checkboxSection {
-  margin-bottom: 6rem;
-}
-
-.checkboxLabel {
-  padding-left: 0.4em;
-  cursor: pointer;
-}
-
-.svgButton {
+.svg {
   height: 100%;
   fill: #333;
   width: clamp(1rem, 4vw, 2.5rem);

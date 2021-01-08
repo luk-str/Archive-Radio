@@ -12,70 +12,50 @@ type Props = {
   playPause: () => void;
   isPlaying: boolean;
   isAudioReady: boolean;
-  isThereAPreviousTrack: boolean;
+  isFirstTrack: boolean;
 };
 
-const Controls = ({
+export default function Controls({
   loadPreviousTrack,
   loadNextTrack,
   playPause,
   isPlaying,
   isAudioReady,
-  isThereAPreviousTrack,
-}: Props) => {
+  isFirstTrack,
+}: Props) {
   return (
     <nav>
       <section className={styles.container}>
         <button
           aria-label="Load previous audio track"
           onClick={() => loadPreviousTrack()}
-          className={`${styles.changeTrackButton} ${
-            !isThereAPreviousTrack && styles.inactive
-          } ${!isAudioReady && styles.inactive}`}
+          className={`${styles.button} ${
+            isFirstTrack || !isAudioReady ? styles.inactive : ""
+          }`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            className={styles.svgButton}
-          >
-            <PreviousTrackButtonSVG />
-          </svg>
+          <PreviousTrackButtonSVG css={styles.svg} />
         </button>
 
         <button
           aria-label={!isPlaying ? "Play" : "Pause"}
           onClick={playPause}
-          className={`${styles.changeTrackButton} ${
-            !isAudioReady && styles.inactive
-          }`}
+          className={`${styles.button} ${!isAudioReady && styles.inactive}`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            className={styles.svgButton}
-          >
-            {!isPlaying ? <PlayButtonSVG /> : <PauseButtonSVG />}
-          </svg>
+          {!isPlaying ? (
+            <PlayButtonSVG css={styles.svg} />
+          ) : (
+            <PauseButtonSVG css={styles.svg} />
+          )}
         </button>
 
         <button
           aria-label="Load next audio track"
           onClick={() => loadNextTrack()}
-          className={`${styles.changeTrackButton} ${
-            !isAudioReady && styles.inactive
-          }`}
+          className={`${styles.button} ${!isAudioReady && styles.inactive}`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            className={styles.svgButton}
-          >
-            <NextTrackButtonSVG />
-          </svg>
+          <NextTrackButtonSVG css={styles.svg} />
         </button>
       </section>
     </nav>
   );
-};
-
-export default Controls;
+}

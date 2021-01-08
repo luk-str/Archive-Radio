@@ -194,9 +194,7 @@ export default function AudioPlayer(): ReactElement {
         playPause={() => playPause(audioElement.current)}
         isAudioReady={isAudioReady}
         isPlaying={isPlaying}
-        isThereAPreviousTrack={
-          trackMemory.length > 1 && trackMemory.indexOf(audioTrack) > 0
-        }
+        isFirstTrack={trackMemory.indexOf(audioTrack) === 0}
       />
     </>
   );
