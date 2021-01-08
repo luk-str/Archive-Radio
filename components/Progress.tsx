@@ -6,16 +6,11 @@ type Props = {
   duration: number;
 };
 
-const Progress = ({ currentPosition, duration }: Props) => {
-  return (
-    <>
-      <h5 className={styles.progress}>
-        {`${convertSecondsToMinSec(currentPosition)} / ${convertSecondsToMinSec(
-          duration
-        )}`}
-      </h5>
-    </>
-  );
-};
+const Progress = ({ currentPosition, duration }: Props) => (
+  <h5 className={styles.progress}>
+    {`${convertSecondsToMinSec(currentPosition)} 
+    / ${convertSecondsToMinSec(duration)}`}
+  </h5>
+);
 
 export default Progress;
