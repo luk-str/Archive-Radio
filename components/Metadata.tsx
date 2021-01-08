@@ -6,12 +6,13 @@ type Props = {
   audioTrack: AudioTrack;
 };
 
-const Metadata = ({ audioTrack }: Props) => {
+export default function Metadata({ audioTrack }: Props) {
   const [isTextOverflowing, setIsTextOverflowing] = useState<boolean>(false);
 
   const titleElement = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
+    // Check if title is longer than it's container
     const title = titleElement.current;
     if (title.scrollWidth > title.clientWidth) setIsTextOverflowing(true);
   }, []);
@@ -26,17 +27,17 @@ const Metadata = ({ audioTrack }: Props) => {
         <h2
           ref={titleElement}
           className={`${styles.title} ${
-            isTextOverflowing ? styles["title--animated"] : ""
+            // Add animation to title if it's longer than container
+            isTextOverflowing && styles["title--animated"]
           }`}
         >
           {audioTrack.title}
         </h2>
       </section>
+
       <section className={styles.year__container}>
         <h4 className={styles.year}>{audioTrack.year}</h4>
       </section>
     </article>
   );
-};
-
-export default Metadata;
+}
