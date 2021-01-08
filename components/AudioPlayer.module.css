@@ -1,3 +1,5 @@
+/* Classes for animating components in with react-transition-group */
+
 .appear {
   opacity: 0;
 }
@@ -28,6 +30,8 @@
   transition: transform 300ms ease-out, opacity 300ms ease-out;
 }
 
+/*  */
+
 .player__container {
   padding-top: 1rem;
   padding-bottom: 5rem;
@@ -52,7 +56,7 @@
   transform: translate3d(0, 0, 0);
 }
 
-.loadingTextContainer {
+.loadingText__container {
   position: fixed;
   max-width: 50%;
   top: 50%;

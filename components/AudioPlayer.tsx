@@ -181,7 +181,7 @@ export default function AudioPlayer(): ReactElement {
             timeout={1500}
             classNames={{ ...styles }}
           >
-            <section className={styles.loadingTextContainer}>
+            <section className={styles.loadingText__container}>
               <h2 className={styles.loadingText}>Looking for a new song...</h2>
             </section>
           </CSSTransition>
