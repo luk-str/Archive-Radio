@@ -15,29 +15,21 @@ import AlbumArt from "./AlbumArt";
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>();
   const [currentPosition, setCurrentPosition] = useState<number>(0);
-  const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
   const [trackMemory, setTrackMemory] = useState<AudioTrack[]>([]);
+
+  const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
 
   const audioElement = useRef<HTMLAudioElement>(null);
 
-  // Initialize player on first load
-
+  // Runs Once on Component Mount
   useEffect(() => {
     const audio = audioElement.current;
 
-    loadRandomAudioTrack();
-
-    audio.ondurationchange = () => {
-      setDuration(audio.duration);
-      setIsAudioReady(true);
-      fadeInAudio();
-    };
-
-    audio.ontimeupdate = () => setCurrentPosition(audio.currentTime);
+    // Add Player Event Handlers
     audio.onplay = () => {
       setIsPlaying(true);
       setIsAutoplayOn(true);
@@ -55,74 +47,68 @@ export default function AudioPlayer(): ReactElement {
       resetPlayer();
       loadRandomAudioTrack();
     };
+    audio.ondurationchange = () => {
+      setDuration(audio.duration);
+      setIsAudioReady(true);
+      fadeInAudio(audioElement.current);
+    };
+    audio.ontimeupdate = () => setCurrentPosition(audio.currentTime);
+
+    // Load First Track
+    loadRandomAudioTrack();
   }, []);
 
-  // Update track memory when audio is valid and ready to play
+  // Adds track to memory when audio is ready and not already in memory
   useEffect(() => {
-    // Only run when isAudioReady updates to true
-    if (isAudioReady) {
-      let currentMemory = trackMemory.filter(Boolean);
-
-      // Only add new track to memory if it isn't already in the memory
-      if (!trackMemory.includes(audioTrack)) {
-        setTrackMemory([...currentMemory, audioTrack]);
-      }
+    if (isAudioReady && !trackMemory.includes(audioTrack)) {
+      setTrackMemory([...trackMemory, audioTrack]);
     }
   }, [isAudioReady]);
 
-  // TRACK LOADING
-
+  // Loads the next track from memory or a new random one if there's none
   function loadNextTrack(): void {
-    // Check the index of current audio before resetting
-    const currentTrackMemoryIndex: number = trackMemory.indexOf(audioTrack);
-    const isLastTrackInMemory: boolean =
+    const currentTrackMemoryIndex = trackMemory.indexOf(audioTrack);
+    const isLastTrackInMemory =
       currentTrackMemoryIndex === trackMemory.length - 1;
 
-    // Load new random track if current track is the last in the memory
-    if (isLastTrackInMemory || currentTrackMemoryIndex < 0) {
-      resetPlayer();
+    resetPlayer();
+    if (isLastTrackInMemory) {
       loadRandomAudioTrack();
     } else {
-      // Otherwise load the next track from memory
-      resetPlayer();
-      const nextTrack = trackMemory[currentTrackMemoryIndex + 1];
-
-      setAudioTrack(nextTrack);
+      setAudioTrack(trackMemory[currentTrackMemoryIndex + 1]);
     }
   }
 
+  // Loads previous track from memory if there is one
   function loadPreviousTrack(): void {
-    const currentTrackMemoryIndex: number = trackMemory.indexOf(audioTrack);
-    const previousTrack: AudioTrack = trackMemory[currentTrackMemoryIndex - 1];
+    const currentTrackMemoryIndex = trackMemory.indexOf(audioTrack);
 
-    if (currentTrackMemoryIndex === 0) return;
-
-    resetPlayer();
-
-    setAudioTrack(previousTrack);
+    if (currentTrackMemoryIndex <= 0) {
+      return;
+    } else {
+      resetPlayer();
+      setAudioTrack(trackMemory[currentTrackMemoryIndex - 1]);
+    }
   }
 
+  // Fetches and loads a new random audio track from Internet Archive
   async function loadRandomAudioTrack(): Promise<void> {
     const id = await fetchRandomItemId();
     const itemMetadata = await fetchMetadata(id);
-
     const audioTrack = getAudioTrack(itemMetadata);
 
     setAudioTrack(audioTrack);
   }
 
-  // Controlling the Audio Player
-
+  // Clears out audio source and resets audio status states
   function resetPlayer(): void {
-    fadeOutAudio();
+    fadeOutAudio(audioElement.current);
     setIsPlaying(false);
     setIsAudioReady(false);
     setAudioTrack({});
   }
 
-  function playPause(): void {
-    const audio = audioElement.current;
-
+  function playPause(audio: HTMLAudioElement): void {
     if (audio.paused) {
       audio.play();
     } else {
@@ -130,33 +116,27 @@ export default function AudioPlayer(): ReactElement {
     }
   }
 
-  function fadeOutAudio(): void {
-    const audio = audioElement.current;
-
-    const fade = setInterval(() => {
+  // Fades out audio volume (Has no effect on iOS devices as they don't allow volume control)
+  function fadeOutAudio(audio: HTMLAudioElement): void {
+    const fadeOut = setInterval(() => {
       if (audio.volume > 0) {
-        // The value has to be rounded each time to avoid weird calculation errors with funky decimals
-        audio.volume = +(audio.volume - 0.1).toFixed(2);
+        audio.volume = +(audio.volume - 0.1).toFixed(2); // Value has to be rounded to avoid calculation errors with funky decimals
       } else {
-        clearInterval(fade);
+        clearInterval(fadeOut);
       }
     }, 30);
   }
 
-  function fadeInAudio(): void {
-    const audio = audioElement.current;
-
-    const fade = setInterval(() => {
+  // Fades in audio volume (Has no effect on iOS devices as they don't allow volume control)
+  function fadeInAudio(audio: HTMLAudioElement): void {
+    const fadeIn = setInterval(() => {
       if (audio.volume < 1) {
-        // The value has to be rounded each time to avoid weird calculation errors with funky decimals
-        audio.volume = +(audio.volume + 0.1).toFixed(2);
+        audio.volume = +(audio.volume + 0.1).toFixed(2); // Value has to be rounded to avoid calculation errors with funky decimals
       } else {
-        clearInterval(fade);
+        clearInterval(fadeIn);
       }
     }, 100);
   }
-
-  // RENDER
 
   return (
     <>
@@ -211,7 +191,7 @@ export default function AudioPlayer(): ReactElement {
       <Controls
         loadPreviousTrack={loadPreviousTrack}
         loadNextTrack={loadNextTrack}
-        playPause={playPause}
+        playPause={() => playPause(audioElement.current)}
         isAudioReady={isAudioReady}
         isPlaying={isPlaying}
         isThereAPreviousTrack={
