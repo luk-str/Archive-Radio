@@ -12,21 +12,21 @@ _🔗 The current build of the main branch is always running live at https://arc
 
 ## How to get started
 
-To run your own local copy of the project:
+### To run your own local copy of the project:
 
-1. Clone the repository to your machine:
+1. Clone the repository to your machine
 
 ```bash
 git clone https://github.com/luk-str/Archive-Radio.git
 ```
 
-2. Navigate to the newly-created project folder:
+2. Navigate to the newly-created project folder
 
 ```bash
 cd Archive-Radio
 ```
 
-3. Install dependencies:
+3. Install dependencies
 
 ```bash
 npm install
@@ -34,7 +34,7 @@ npm install
 yarn add
 ```
 
-4. Start the developmeny server:
+4. Start the developmeny server
 
 ```bash
 npm run dev
@@ -46,6 +46,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Contributing
 
-If you'd like to contribute, you can look through the current [issues](https://github.com/luk-str/Archive-Radio/issues) and find one you'd like to work on or just add your own I'll be verry happy to take your suggestions! ❤️
+If you want to contribute, you can either look through the current [issues](https://github.com/luk-str/Archive-Radio/issues) and find one you'd like to work on or just add your own. I'm very happy to take suggestions! ❤️
 
 Please create a separate branch for your work and add a pull request to the [develop branch](https://github.com/luk-str/Archive-Radio/tree/develop) once you're done.
