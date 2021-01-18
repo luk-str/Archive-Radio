@@ -9,6 +9,10 @@
   z-index: 1;
 }
 
+.container a {
+  text-decoration: none;
+}
+
 .title {
   color: #333;
   font-size: clamp(0.9rem, min(3vh, 6vw), 1.5rem);
