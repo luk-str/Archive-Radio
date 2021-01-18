@@ -13,6 +13,7 @@ import Controls from "./Controls";
 import Metadata from "./Metadata";
 import Progress from "./Progress";
 import AlbumArt from "./AlbumArt";
+import { encode } from "querystring";
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
@@ -72,6 +73,14 @@ export default function AudioPlayer(): ReactElement {
 
   // Adds track to memory when audio is ready and not already in memory
   useEffect(() => {
+    // TEMPORARY - console.log share url to loaded track
+    if (isAudioReady) {
+      console.log(
+        "Share URL: " +
+          encodeURI(`${window.location.origin}?trackid=${audioTrack.id}`)
+      );
+    }
+
     if (isAudioReady && !trackMemory.includes(audioTrack)) {
       setTrackMemory([...trackMemory, audioTrack]);
     }
