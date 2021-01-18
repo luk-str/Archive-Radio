@@ -1,5 +1,6 @@
 import { useState, useEffect, ReactElement, useRef } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import styles from "./AudioPlayer.module.css";
 import type { AudioTrack } from "../lib/types";
@@ -24,6 +25,7 @@ export default function AudioPlayer(): ReactElement {
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
 
   const audioElement = useRef<HTMLAudioElement>(null);
+  const router = useRouter();
 
   // Runs Once on Component Mount
   useEffect(() => {
@@ -53,10 +55,20 @@ export default function AudioPlayer(): ReactElement {
       fadeInAudio(audioElement.current);
     };
     audio.ontimeupdate = () => setCurrentPosition(audio.currentTime);
-
-    // Load First Track
-    loadRandomAudioTrack();
   }, []);
+
+  // Load track once router has loaded its parameters
+  useEffect(() => {
+    if (router.isReady) {
+      const trackId = router.query.trackid as string;
+      // Load specific track if there's track ID in the url, else load random.
+      if (trackId) {
+        loadAudioTrack(trackId);
+      } else {
+        loadRandomAudioTrack();
+      }
+    }
+  }, [router.isReady]);
 
   // Adds track to memory when audio is ready and not already in memory
   useEffect(() => {
@@ -89,6 +101,14 @@ export default function AudioPlayer(): ReactElement {
       resetPlayer();
       setAudioTrack(trackMemory[currentTrackMemoryIndex - 1]);
     }
+  }
+
+  // Fetches and loads a specific audio track based on provided track id
+  async function loadAudioTrack(id: string): Promise<void> {
+    const itemMetadata = await getItemMetadata(id);
+    const audioTrack = createAudioTrackObject(itemMetadata);
+
+    setAudioTrack(audioTrack);
   }
 
   // Fetches and loads a new random audio track from Internet Archive
