@@ -10,7 +10,7 @@ import {
   getItemMetadata,
 } from "../lib/fetchFromArchive";
 import Controls from "./Controls";
-import Metadata from "./Metadata";
+import TrackMetadata from "./TrackMetadata";
 import Progress from "./Progress";
 import AlbumArt from "./AlbumArt";
 import { encode } from "querystring";
@@ -193,7 +193,7 @@ export default function AudioPlayer(): ReactElement {
             classNames={{ ...styles }}
           >
             <article className={styles.player__container}>
-              <Metadata audioTrack={audioTrack} />
+              <TrackMetadata audioTrack={audioTrack} />
 
               <section className={styles.coverImage__container}>
                 <AlbumArt imageSourceUrl={audioTrack.imageSourceUrl} />
