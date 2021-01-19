@@ -3,15 +3,18 @@ import { IoShareOutline } from "react-icons/io5";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
 type Props = {
-  shareTrackUrl: string;
   isAudioReady: boolean;
+  isShareModalOpen: boolean;
+  openShareModal: () => void;
 };
 
-const Header = ({ shareTrackUrl, isAudioReady }: Props) => (
+const Header = ({ isAudioReady, isShareModalOpen, openShareModal }: Props) => (
   <header className={styles.container}>
     <button
-      className={`${styles.button} ${!isAudioReady && styles.inactive}`}
-      disabled={isAudioReady ? false : true}
+      // className={`${styles.button} ${!isAudioReady && styles.inactive}`}
+      // disabled={isAudioReady ? false : true}
+      className={`${styles.button} ${styles.inactive}`}
+      disabled
     >
       <AiOutlineInfoCircle />
     </button>
@@ -26,7 +29,8 @@ const Header = ({ shareTrackUrl, isAudioReady }: Props) => (
 
     <button
       className={`${styles.button} ${!isAudioReady && styles.inactive}`}
-      disabled={isAudioReady ? false : true}
+      disabled={!isAudioReady || isShareModalOpen ? true : false}
+      onClick={openShareModal}
     >
       <IoShareOutline />
     </button>

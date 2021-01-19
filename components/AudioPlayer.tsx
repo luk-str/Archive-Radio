@@ -14,6 +14,7 @@ import Controls from "./Controls";
 import TrackMetadata from "./TrackMetadata";
 import Progress from "./Progress";
 import AlbumArt from "./AlbumArt";
+import ShareModal from "./ShareModal";
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
@@ -25,6 +26,7 @@ export default function AudioPlayer(): ReactElement {
   const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
 
   const audioElement = useRef<HTMLAudioElement>(null);
   const router = useRouter();
@@ -178,7 +180,18 @@ export default function AudioPlayer(): ReactElement {
         </title>
       </Head>
 
-      <Header shareTrackUrl={shareTrackUrl} isAudioReady={isAudioReady} />
+      {isShareModalOpen && (
+        <ShareModal
+          shareTrackUrl={shareTrackUrl}
+          closeShareModal={() => setIsShareModalOpen(false)}
+        />
+      )}
+
+      <Header
+        isAudioReady={isAudioReady}
+        openShareModal={() => setIsShareModalOpen(true)}
+        isShareModalOpen={isShareModalOpen}
+      />
 
       <main>
         <audio
@@ -234,6 +247,7 @@ export default function AudioPlayer(): ReactElement {
         isAudioReady={isAudioReady}
         isPlaying={isPlaying}
         isFirstTrack={trackMemory.indexOf(audioTrack) === 0}
+        isShareModalOpen={isShareModalOpen}
       />
     </>
   );
