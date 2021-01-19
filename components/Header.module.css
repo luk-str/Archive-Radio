@@ -6,14 +6,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
 }
 
 .container a {
   text-decoration: none;
+  margin: 0 15vw;
 }
 
 .title {
   color: #333;
   font-size: clamp(0.9rem, min(3vh, 6vw), 1.5rem);
+}
+
+.button {
+  color: #333;
+  display: inline-block;
+  border: none;
+  padding: 0.5em 1em;
+  margin: 0;
+  text-decoration: none;
+  background: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: clamp(0.9rem, min(3vh, 6vw), 1.5rem);
+  transform: scale(1.2);
 }
