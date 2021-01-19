@@ -176,45 +176,52 @@ export default function AudioPlayer(): ReactElement {
         </title>
       </Head>
 
-      <audio
-        src={audioTrack.audioSourceUrl}
-        ref={audioElement}
-        autoPlay={isAutoplayOn}
-      ></audio>
+      <main>
+        <audio
+          src={audioTrack.audioSourceUrl}
+          ref={audioElement}
+          autoPlay={isAutoplayOn}
+        ></audio>
 
-      <TransitionGroup>
-        {isAudioReady ? (
-          <CSSTransition
-            in={isAudioReady}
-            appear={true}
-            key={audioTrack.id}
-            timeout={1500}
-            classNames={{ ...styles }}
-          >
-            <article className={styles.player__container}>
-              <TrackMetadata audioTrack={audioTrack} />
+        <TransitionGroup>
+          {isAudioReady ? (
+            <CSSTransition
+              in={isAudioReady}
+              appear={true}
+              key={audioTrack.id}
+              timeout={1500}
+              classNames={{ ...styles }}
+            >
+              <article className={styles.player__container}>
+                <TrackMetadata audioTrack={audioTrack} />
 
-              <section className={styles.coverImage__container}>
-                <AlbumArt imageSourceUrl={audioTrack.imageSourceUrl} />
+                <section className={styles.coverImage__container}>
+                  <AlbumArt imageSourceUrl={audioTrack.imageSourceUrl} />
+                </section>
+
+                <Progress
+                  currentPosition={currentPosition}
+                  duration={duration}
+                />
+              </article>
+            </CSSTransition>
+          ) : (
+            <CSSTransition
+              in={isAudioReady}
+              appear={true}
+              key={"loader"}
+              timeout={1500}
+              classNames={{ ...styles }}
+            >
+              <section className={styles.loadingText__container}>
+                <h2 className={styles.loadingText}>
+                  Looking for a new song...
+                </h2>
               </section>
-
-              <Progress currentPosition={currentPosition} duration={duration} />
-            </article>
-          </CSSTransition>
-        ) : (
-          <CSSTransition
-            in={isAudioReady}
-            appear={true}
-            key={"loader"}
-            timeout={1500}
-            classNames={{ ...styles }}
-          >
-            <section className={styles.loadingText__container}>
-              <h2 className={styles.loadingText}>Looking for a new song...</h2>
-            </section>
-          </CSSTransition>
-        )}
-      </TransitionGroup>
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+      </main>
 
       <Controls
         loadPreviousTrack={loadPreviousTrack}

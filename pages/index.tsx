@@ -9,9 +9,7 @@ export default function Home() {
 
       <Header />
 
-      <main>
-        <AudioPlayer />
-      </main>
+      <AudioPlayer />
     </>
   );
 }
