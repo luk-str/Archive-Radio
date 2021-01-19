@@ -9,7 +9,10 @@ type Props = {
 
 const Header = ({ shareTrackUrl, isAudioReady }: Props) => (
   <header className={styles.container}>
-    <button className={`${styles.button} ${!isAudioReady && styles.inactive}`}>
+    <button
+      className={`${styles.button} ${!isAudioReady && styles.inactive}`}
+      disabled={isAudioReady ? false : true}
+    >
       <AiOutlineInfoCircle />
     </button>
 
@@ -21,7 +24,10 @@ const Header = ({ shareTrackUrl, isAudioReady }: Props) => (
       <h1 className={styles.title}>Archive Radio</h1>
     </a>
 
-    <button className={`${styles.button} ${!isAudioReady && styles.inactive}`}>
+    <button
+      className={`${styles.button} ${!isAudioReady && styles.inactive}`}
+      disabled={isAudioReady ? false : true}
+    >
       <IoShareOutline />
     </button>
   </header>
