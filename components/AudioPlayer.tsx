@@ -9,6 +9,7 @@ import {
   getRandomItemId,
   getItemMetadata,
 } from "../lib/fetchFromArchive";
+import Header from "./Header";
 import Controls from "./Controls";
 import TrackMetadata from "./TrackMetadata";
 import Progress from "./Progress";
@@ -19,6 +20,7 @@ export default function AudioPlayer(): ReactElement {
   const [duration, setDuration] = useState<number>();
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [trackMemory, setTrackMemory] = useState<AudioTrack[]>([]);
+  const [shareTrackUrl, setShareTrackUrl] = useState<string>();
 
   const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -70,18 +72,18 @@ export default function AudioPlayer(): ReactElement {
     }
   }, [router.isReady]);
 
-  // Adds track to memory when audio is ready and not already in memory
+  // Runs when audio is ready to play
   useEffect(() => {
-    // TEMPORARY - console.log share url to loaded track
     if (isAudioReady) {
-      console.log(
-        "Share URL: " +
-          encodeURI(`${window.location.origin}?trackid=${audioTrack.id}`)
+      // Set url for sharing a link to specific track using track identifier
+      setShareTrackUrl(
+        encodeURI(`${window.location.origin}?trackid=${audioTrack.id}`)
       );
-    }
 
-    if (isAudioReady && !trackMemory.includes(audioTrack)) {
-      setTrackMemory([...trackMemory, audioTrack]);
+      // Save track to memory if it's not already present
+      if (!trackMemory.includes(audioTrack)) {
+        setTrackMemory([...trackMemory, audioTrack]);
+      }
     }
   }, [isAudioReady]);
 
@@ -175,6 +177,8 @@ export default function AudioPlayer(): ReactElement {
             : "Archive Radio"}
         </title>
       </Head>
+
+      <Header shareTrackUrl={shareTrackUrl} />
 
       <main>
         <audio

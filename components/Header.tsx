@@ -1,6 +1,10 @@
 import styles from "./Header.module.css";
 
-const Header = () => (
+type Props = {
+  shareTrackUrl: string;
+};
+
+const Header = ({ shareTrackUrl }: Props) => (
   <header className={styles.container}>
     <a href="/" title="Reload Archive Radio">
       <h1 className={styles.title}>Archive Radio</h1>
