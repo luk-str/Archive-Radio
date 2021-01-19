@@ -13,7 +13,6 @@ import Controls from "./Controls";
 import TrackMetadata from "./TrackMetadata";
 import Progress from "./Progress";
 import AlbumArt from "./AlbumArt";
-import { encode } from "querystring";
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
