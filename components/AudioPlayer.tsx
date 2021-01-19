@@ -178,7 +178,7 @@ export default function AudioPlayer(): ReactElement {
         </title>
       </Head>
 
-      <Header shareTrackUrl={shareTrackUrl} />
+      <Header shareTrackUrl={shareTrackUrl} isAudioReady={isAudioReady} />
 
       <main>
         <audio

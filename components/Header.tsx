@@ -4,11 +4,12 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 
 type Props = {
   shareTrackUrl: string;
+  isAudioReady: boolean;
 };
 
-const Header = ({ shareTrackUrl }: Props) => (
+const Header = ({ shareTrackUrl, isAudioReady }: Props) => (
   <header className={styles.container}>
-    <button className={`${styles.button} ${styles.button__info}`}>
+    <button className={`${styles.button} ${!isAudioReady && styles.inactive}`}>
       <AiOutlineInfoCircle />
     </button>
 
@@ -20,7 +21,7 @@ const Header = ({ shareTrackUrl }: Props) => (
       <h1 className={styles.title}>Archive Radio</h1>
     </a>
 
-    <button className={`${styles.button} ${styles.button_share}`}>
+    <button className={`${styles.button} ${!isAudioReady && styles.inactive}`}>
       <IoShareOutline />
     </button>
   </header>
