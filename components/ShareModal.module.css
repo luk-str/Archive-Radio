@@ -32,6 +32,7 @@
 
 .header {
   font-size: clamp(0.9rem, min(3vh, 6vw), 1.5rem);
+  padding: 0 1rem;
 }
 
 .link__container {
@@ -78,4 +79,33 @@
   height: 100%;
   z-index: -1;
   cursor: grab;
+}
+
+.copied {
+  z-index: 4;
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  background: #fff;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  box-shadow: 5px 15px 30px -10px #0003;
+  font-weight: bold;
+  opacity: 0;
+}
+
+.copied__visible {
+  animation: slidein 300ms ease forwards;
+}
+
+@keyframes slidein {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 90%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0%) scale(1);
+  }
 }
