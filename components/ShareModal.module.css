@@ -3,7 +3,7 @@
   width: 100%;
   height: 100%;
   backdrop-filter: blur(30px);
-  z-index: 1;
+  z-index: 2;
   opacity: 0;
   animation: appear 200ms forwards;
 }
