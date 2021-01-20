@@ -9,21 +9,24 @@ import {
   getRandomItemId,
   getItemMetadata,
 } from "../lib/fetchFromArchive";
+import Header from "./Header";
 import Controls from "./Controls";
-import Metadata from "./Metadata";
+import TrackMetadata from "./TrackMetadata";
 import Progress from "./Progress";
 import AlbumArt from "./AlbumArt";
-import { encode } from "querystring";
+import ShareModal from "./ShareModal";
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
   const [duration, setDuration] = useState<number>();
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [trackMemory, setTrackMemory] = useState<AudioTrack[]>([]);
+  const [shareTrackUrl, setShareTrackUrl] = useState<string>();
 
   const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
 
   const audioElement = useRef<HTMLAudioElement>(null);
   const router = useRouter();
@@ -71,18 +74,18 @@ export default function AudioPlayer(): ReactElement {
     }
   }, [router.isReady]);
 
-  // Adds track to memory when audio is ready and not already in memory
+  // Runs when audio is ready to play
   useEffect(() => {
-    // TEMPORARY - console.log share url to loaded track
     if (isAudioReady) {
-      console.log(
-        "Share URL: " +
-          encodeURI(`${window.location.origin}?trackid=${audioTrack.id}`)
+      // Set url for sharing a link to specific track using track identifier
+      setShareTrackUrl(
+        encodeURI(`${window.location.origin}?trackid=${audioTrack.id}`)
       );
-    }
 
-    if (isAudioReady && !trackMemory.includes(audioTrack)) {
-      setTrackMemory([...trackMemory, audioTrack]);
+      // Save track to memory if it's not already present
+      if (!trackMemory.includes(audioTrack)) {
+        setTrackMemory([...trackMemory, audioTrack]);
+      }
     }
   }, [isAudioReady]);
 
@@ -177,45 +180,65 @@ export default function AudioPlayer(): ReactElement {
         </title>
       </Head>
 
-      <audio
-        src={audioTrack.audioSourceUrl}
-        ref={audioElement}
-        autoPlay={isAutoplayOn}
-      ></audio>
+      {isShareModalOpen && (
+        <ShareModal
+          shareTrackUrl={shareTrackUrl}
+          closeShareModal={() => setIsShareModalOpen(false)}
+        />
+      )}
 
-      <TransitionGroup>
-        {isAudioReady ? (
-          <CSSTransition
-            in={isAudioReady}
-            appear={true}
-            key={audioTrack.id}
-            timeout={1500}
-            classNames={{ ...styles }}
-          >
-            <article className={styles.player__container}>
-              <Metadata audioTrack={audioTrack} />
+      <Header
+        isAudioReady={isAudioReady}
+        openShareModal={() => setIsShareModalOpen(true)}
+        isShareModalOpen={isShareModalOpen}
+      />
 
-              <section className={styles.coverImage__container}>
-                <AlbumArt imageSourceUrl={audioTrack.imageSourceUrl} />
+      <main>
+        <audio
+          src={audioTrack.audioSourceUrl}
+          ref={audioElement}
+          autoPlay={isAutoplayOn}
+        ></audio>
+
+        <TransitionGroup>
+          {isAudioReady ? (
+            <CSSTransition
+              in={isAudioReady}
+              appear={true}
+              key={audioTrack.id}
+              timeout={1500}
+              classNames={{ ...styles }}
+            >
+              <article className={styles.player__container}>
+                <TrackMetadata audioTrack={audioTrack} />
+
+                <section className={styles.coverImage__container}>
+                  <AlbumArt imageSourceUrl={audioTrack.imageSourceUrl} />
+                </section>
+
+                <Progress
+                  currentPosition={currentPosition}
+                  duration={duration}
+                />
+              </article>
+            </CSSTransition>
+          ) : (
+            <CSSTransition
+              in={isAudioReady}
+              appear={true}
+              key={"loader"}
+              timeout={1500}
+              classNames={{ ...styles }}
+            >
+              <section className={styles.loadingText__container}>
+                <h2 className={styles.loadingText}>
+                  Looking for a new song...
+                </h2>
               </section>
-
-              <Progress currentPosition={currentPosition} duration={duration} />
-            </article>
-          </CSSTransition>
-        ) : (
-          <CSSTransition
-            in={isAudioReady}
-            appear={true}
-            key={"loader"}
-            timeout={1500}
-            classNames={{ ...styles }}
-          >
-            <section className={styles.loadingText__container}>
-              <h2 className={styles.loadingText}>Looking for a new song...</h2>
-            </section>
-          </CSSTransition>
-        )}
-      </TransitionGroup>
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+      </main>
 
       <Controls
         loadPreviousTrack={loadPreviousTrack}
@@ -224,6 +247,7 @@ export default function AudioPlayer(): ReactElement {
         isAudioReady={isAudioReady}
         isPlaying={isPlaying}
         isFirstTrack={trackMemory.indexOf(audioTrack) === 0}
+        isShareModalOpen={isShareModalOpen}
       />
     </>
   );

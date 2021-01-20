@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import styles from "./Metadata.module.css";
+import styles from "./TrackMetadata.module.css";
 import type { AudioTrack } from "../lib/types";
 
 type Props = {
   audioTrack: AudioTrack;
 };
 
-export default function Metadata({ audioTrack }: Props) {
+export default function TrackMetadata({ audioTrack }: Props) {
   const [isTextOverflowing, setIsTextOverflowing] = useState<boolean>(false);
 
   const titleElement = useRef<HTMLHeadingElement>(null);
