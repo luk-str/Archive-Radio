@@ -11,6 +11,7 @@ type Props = {
 const Header = ({ isAudioReady, isShareModalOpen, openShareModal }: Props) => (
   <header className={styles.container}>
     <button
+      title="Show more info"
       // className={`${styles.button} ${!isAudioReady && styles.inactive}`}
       // disabled={isAudioReady ? false : true}
       className={`${styles.button} ${styles.inactive}`}
@@ -28,6 +29,7 @@ const Header = ({ isAudioReady, isShareModalOpen, openShareModal }: Props) => (
     </a>
 
     <button
+      title="Share the song"
       className={`${styles.button} ${!isAudioReady && styles.inactive}`}
       disabled={!isAudioReady || isShareModalOpen ? true : false}
       onClick={openShareModal}
