@@ -9,6 +9,7 @@ import {
   getRandomItemId,
   getItemMetadata,
 } from "../lib/fetchFromArchive";
+import { getRandomEmoji } from "../lib/misc";
 import Header from "./Header/Header";
 import Controls from "./Controls";
 import TrackMetadata from "./Main/TrackMetadata";
@@ -29,9 +30,17 @@ export default function AudioPlayer(): ReactElement {
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false);
+  const [emojis, setEmojis] = useState<string[]>(["", ""]);
 
   const audioElement = useRef<HTMLAudioElement>(null);
   const router = useRouter();
+
+  function setRandomEmojis() {
+    const emoji1 = getRandomEmoji();
+    const emoji2 = getRandomEmoji();
+
+    setEmojis([emoji1, emoji2]);
+  }
 
   // Runs Once on Component Mount
   useEffect(() => {
@@ -89,6 +98,8 @@ export default function AudioPlayer(): ReactElement {
         setTrackMemory([...trackMemory, audioTrack]);
       }
     }
+    
+    setRandomEmojis();
   }, [isAudioReady]);
 
   // Loads the next track from memory or a new random one if there's none
@@ -243,7 +254,21 @@ export default function AudioPlayer(): ReactElement {
             >
               <section className={styles.loadingText__container}>
                 <h2 className={styles.loadingText}>
-                  Looking for a new song...
+                  <span
+                    role="img"
+                    className={`${styles.emoji} ${styles.emoji__top}`}
+                    aria-label="a random emoji"
+                  >
+                    {emojis[0]}
+                  </span>
+                  Loading
+                  <span
+                    role="img"
+                    className={`${styles.emoji} ${styles.emoji__bottom}`}
+                    aria-label="a random emoji"
+                  >
+                    {emojis[1]}
+                  </span>
                 </h2>
               </section>
             </CSSTransition>

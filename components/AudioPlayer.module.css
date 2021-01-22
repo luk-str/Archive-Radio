@@ -58,7 +58,7 @@
 
 .loadingText__container {
   position: fixed;
-  max-width: 50%;
+  max-width: 60%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -85,4 +85,12 @@
   to {
     background-position: 5000%;
   }
+}
+
+.emoji {
+  display: block;
+}
+
+.emoji__bottom {
+  margin-top: 0.2em;
 }
