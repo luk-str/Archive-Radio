@@ -109,9 +109,11 @@
   box-shadow: 5px 15px 30px -10px #0003;
   font-weight: bold;
   opacity: 0;
+  visibility: hidden;
 }
 
 .copied__visible {
+  visibility: visible;
   animation: slidein 1300ms ease forwards;
 }
 

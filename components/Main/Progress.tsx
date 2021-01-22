@@ -1,4 +1,4 @@
-import { convertSecondsToMinSec } from "../lib/convertMetadata";
+import { convertSecondsToMinSec } from "../../lib/convertMetadata";
 import styles from "./Progress.module.css";
 
 type Props = {

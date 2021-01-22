@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./TrackMetadata.module.css";
-import type { AudioTrack } from "../lib/types";
+import type { AudioTrack } from "../../lib/types";
 
 type Props = {
   audioTrack: AudioTrack;

@@ -9,12 +9,13 @@ import {
   getRandomItemId,
   getItemMetadata,
 } from "../lib/fetchFromArchive";
-import Header from "./Header";
+import Header from "./Header/Header";
 import Controls from "./Controls";
-import TrackMetadata from "./TrackMetadata";
-import Progress from "./Progress";
-import AlbumArt from "./AlbumArt";
-import ShareModal from "./ShareModal";
+import TrackMetadata from "./Main/TrackMetadata";
+import Progress from "./Main/Progress";
+import AlbumArt from "./Main/AlbumArt";
+import ShareModal from "./Header/ShareModal";
+import InfoModal from "./Header/InfoModal";
 
 export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
@@ -27,6 +28,7 @@ export default function AudioPlayer(): ReactElement {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false);
 
   const audioElement = useRef<HTMLAudioElement>(null);
   const router = useRouter();
@@ -187,10 +189,19 @@ export default function AudioPlayer(): ReactElement {
         />
       )}
 
+      {isInfoModalOpen && (
+        <InfoModal
+          audioTrack={audioTrack}
+          closeInfoModal={() => setIsInfoModalOpen(false)}
+        />
+      )}
+
       <Header
         isAudioReady={isAudioReady}
         openShareModal={() => setIsShareModalOpen(true)}
         isShareModalOpen={isShareModalOpen}
+        openInfoModal={() => setIsInfoModalOpen(true)}
+        isInfoModalOpen={isInfoModalOpen}
       />
 
       <main>
