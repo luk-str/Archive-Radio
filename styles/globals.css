@@ -23,3 +23,7 @@ on element after mouse click */
 main {
   overflow-x: hidden;
 }
+
+a {
+  color: inherit;
+}

@@ -5,17 +5,24 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 type Props = {
   isAudioReady: boolean;
   isShareModalOpen: boolean;
+  isInfoModalOpen: boolean;
   openShareModal: () => void;
+  openInfoModal: () => void;
 };
 
-const Header = ({ isAudioReady, isShareModalOpen, openShareModal }: Props) => (
+const Header = ({
+  isAudioReady,
+  isShareModalOpen,
+  isInfoModalOpen,
+  openShareModal,
+  openInfoModal,
+}: Props) => (
   <header className={styles.container}>
     <button
       title="Show more info"
-      // className={`${styles.button} ${!isAudioReady && styles.inactive}`}
-      // disabled={isAudioReady ? false : true}
-      className={`${styles.button} ${styles.inactive}`}
-      disabled
+      className={styles.button}
+      disabled={isInfoModalOpen ? true : false}
+      onClick={openInfoModal}
     >
       <AiOutlineInfoCircle />
     </button>
