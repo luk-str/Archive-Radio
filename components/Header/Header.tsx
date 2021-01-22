@@ -20,8 +20,8 @@ const Header = ({
   <header className={styles.container}>
     <button
       title="Show more info"
-      className={`${styles.button} ${!isAudioReady && styles.inactive}`}
-      disabled={!isAudioReady || isInfoModalOpen ? true : false}
+      className={styles.button}
+      disabled={isInfoModalOpen ? true : false}
       onClick={openInfoModal}
     >
       <AiOutlineInfoCircle />
