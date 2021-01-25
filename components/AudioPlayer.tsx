@@ -67,6 +67,7 @@ export default function AudioPlayer(): ReactElement {
   useEffect(() => {
     if (router.isReady) {
       const trackId = router.query.trackid as string;
+
       // Load specific track if there's track ID in the url, else load random.
       if (trackId) {
         loadAudioTrack(trackId);
@@ -120,9 +121,14 @@ export default function AudioPlayer(): ReactElement {
   // Fetches and loads a specific audio track based on provided track id
   async function loadAudioTrack(id: string): Promise<void> {
     const itemMetadata = await getItemMetadata(id);
-    const audioTrack = createAudioTrackObject(itemMetadata);
 
-    setAudioTrack(audioTrack);
+    if (itemMetadata.metadata) {
+      const audioTrack = createAudioTrackObject(itemMetadata);
+
+      setAudioTrack(audioTrack);
+    } else {
+      loadRandomAudioTrack();
+    }
   }
 
   // Fetches and loads a new random audio track from Internet Archive
