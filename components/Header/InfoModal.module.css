@@ -7,6 +7,12 @@
   animation: appear 200ms forwards;
 }
 
+@supports not (backdrop-filter: none) {
+  .container {
+    background: #000c;
+  }
+}
+
 @keyframes appear {
   from {
     opacity: 0;
@@ -32,21 +38,6 @@
   z-index: -1;
   cursor: pointer;
 }
-
-/* .button__close::before {
-  content: "x";
-  font-size: clamp(0.7rem, min(2vh, 4vw), 1.1rem);
-  color: #333;
-  font-weight: bold;
-  padding: 0.8em 1.5em;
-  position: fixed;
-  bottom: 10vh;
-  background: #fff;
-  border-radius: 10px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  box-shadow: 5px 10px 30px -10px #0005;
-} */
 
 .box {
   width: min(75vw, 500px);
