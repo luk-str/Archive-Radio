@@ -7,6 +7,12 @@
   animation: appear 200ms forwards;
 }
 
+@supports not (backdrop-filter: none) {
+  .container {
+    background: #000c;
+  }
+}
+
 @keyframes appear {
   from {
     opacity: 0;
