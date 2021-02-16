@@ -90,6 +90,23 @@ export default function AudioPlayer(): ReactElement {
         setTrackMemory([...trackMemory, audioTrack]);
       }
     }
+
+    // Add key controls
+    document.onkeydown = (event) => {
+      if (isAudioReady) {
+        switch (event.code) {
+          case "Space":
+            playPause(audioElement.current);
+            break;
+          case "ArrowRight":
+            loadNextTrack();
+            break;
+          case "ArrowLeft":
+            loadPreviousTrack();
+            break;
+        }
+      }
+    };
   }, [isAudioReady]);
 
   // Loads the next track from memory or a new random one if there's none
