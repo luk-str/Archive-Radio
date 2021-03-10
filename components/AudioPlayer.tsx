@@ -89,25 +89,29 @@ export default function AudioPlayer(): ReactElement {
       if (!trackMemory.includes(audioTrack)) {
         setTrackMemory([...trackMemory, audioTrack]);
       }
+
+      // Add keyboard controls
+      document.addEventListener("keydown", handleKeyPress);
     }
 
-    // Add key controls
-    document.onkeydown = (event) => {
-      if (isAudioReady) {
-        switch (event.code) {
-          case "Space":
-            playPause(audioElement.current);
-            break;
-          case "ArrowRight":
-            loadNextTrack();
-            break;
-          case "ArrowLeft":
-            loadPreviousTrack();
-            break;
-        }
-      }
-    };
+    // Remove event listener on state change
+    return () => document.removeEventListener("keydown", handleKeyPress);
   }, [isAudioReady]);
+
+  // Handle keyboard controls
+  function handleKeyPress(event: KeyboardEvent): void {
+    switch (event.code) {
+      case "Space":
+        playPause(audioElement.current);
+        break;
+      case "ArrowRight":
+        loadNextTrack();
+        break;
+      case "ArrowLeft":
+        loadPreviousTrack();
+        break;
+    }
+  }
 
   // Loads the next track from memory or a new random one if there's none
   function loadNextTrack(): void {
