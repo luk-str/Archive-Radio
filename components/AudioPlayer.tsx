@@ -21,7 +21,7 @@ export default function AudioPlayer(): ReactElement {
   const [audioTrack, setAudioTrack] = useState<AudioTrack>({});
   const [duration, setDuration] = useState<number>();
   const [currentPosition, setCurrentPosition] = useState<number>(0);
-  const [trackMemory, setTrackMemory] = useState<AudioTrack[]>([]);
+  const [trackMemory, _setTrackMemory] = useState<AudioTrack[]>([]);
   const [shareTrackUrl, setShareTrackUrl] = useState<string>();
 
   const [isAudioReady, setIsAudioReady] = useState<boolean>(false);
@@ -32,6 +32,8 @@ export default function AudioPlayer(): ReactElement {
 
   const audioElement = useRef<HTMLAudioElement>(null);
   const router = useRouter();
+
+  const trackMemoryRef = useRef(trackMemory);
 
   // Runs Once on Component Mount
   useEffect(() => {
@@ -87,51 +89,60 @@ export default function AudioPlayer(): ReactElement {
 
       // Save track to memory if it's not already present
       if (!trackMemory.includes(audioTrack)) {
-        setTrackMemory([...trackMemory, audioTrack]);
+        setTrackMemory([...trackMemoryRef.current, audioTrack]);
       }
+
+      // Add keyboard controls
+      document.addEventListener("keydown", handleKeyPress);
     }
 
-    // Add key controls
-    document.onkeydown = (event) => {
-      if (isAudioReady) {
-        switch (event.code) {
-          case "Space":
-            playPause(audioElement.current);
-            break;
-          case "ArrowRight":
-            loadNextTrack();
-            break;
-          case "ArrowLeft":
-            loadPreviousTrack();
-            break;
-        }
-      }
-    };
+    // Remove event listener on state change
+    return () => document.removeEventListener("keydown", handleKeyPress);
   }, [isAudioReady]);
+
+  // Handle keyboard controls
+  function handleKeyPress(event: KeyboardEvent): void {
+    switch (event.code) {
+      case "Space":
+        playPause(audioElement.current);
+        break;
+      case "ArrowRight":
+        loadNextTrack();
+        break;
+      case "ArrowLeft":
+        loadPreviousTrack();
+        break;
+    }
+  }
+
+  function setTrackMemory(newValue: AudioTrack[]) {
+    trackMemoryRef.current = newValue;
+    _setTrackMemory(newValue);
+  }
 
   // Loads the next track from memory or a new random one if there's none
   function loadNextTrack(): void {
-    const currentTrackMemoryIndex = trackMemory.indexOf(audioTrack);
+    const currentTrackMemoryIndex = trackMemoryRef.current.indexOf(audioTrack);
     const isLastTrackInMemory =
-      currentTrackMemoryIndex === trackMemory.length - 1;
+      currentTrackMemoryIndex === trackMemoryRef.current.length - 1;
 
     resetPlayer();
     if (isLastTrackInMemory) {
       loadRandomAudioTrack();
     } else {
-      setAudioTrack(trackMemory[currentTrackMemoryIndex + 1]);
+      setAudioTrack(trackMemoryRef.current[currentTrackMemoryIndex + 1]);
     }
   }
 
   // Loads previous track from memory if there is one
   function loadPreviousTrack(): void {
-    const currentTrackMemoryIndex = trackMemory.indexOf(audioTrack);
+    const currentTrackMemoryIndex = trackMemoryRef.current.indexOf(audioTrack);
 
     if (currentTrackMemoryIndex <= 0) {
       return;
     } else {
       resetPlayer();
-      setAudioTrack(trackMemory[currentTrackMemoryIndex - 1]);
+      setAudioTrack(trackMemoryRef.current[currentTrackMemoryIndex - 1]);
     }
   }
 
