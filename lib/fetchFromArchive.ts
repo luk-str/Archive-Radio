@@ -68,7 +68,7 @@ export async function getItemMetadata(id: string): Promise<Metadata> {
 
 const randomSearchUrl = () =>
   encodeURI(
-    `https://archive.org/advancedsearch.php?q=collection:(${randomCollection()})+AND+mediatype:(audio)&fl[]=identifier&fl[]=creator&fl[]=title&fl[]=year&fl[]=creator&sort[]=__random+desc&rows=1&page=${randomPageNumber()}&output=json`
+    `https://archive.org/advancedsearch.php?q=collection:(${randomCollection()})+AND+mediatype:(audio)&fl[]=identifier&fl[]=creator&fl[]=title&fl[]=year&fl[]=creator&sort[]=random+desc&rows=1&page=${randomPageNumber()}&output=json`
   );
 
 const randomPageNumber = () => Math.floor(Math.random() * searchPagesRange);
